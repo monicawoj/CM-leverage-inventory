@@ -3,370 +3,50 @@
   <head>
     <meta charset="utf-8">
     <title>Leverage Inventory: Your Results</title>
-    <style>
-
-      body {
-          padding: 20px;  /* padding from top of page */
-      }
-
-      h1 {
-        font-family: "Whitney", Helvetica, sans-serif;
-        font-size: 30px;
-      }
-
-      p {   /* text paragraph with description */
-        font-family: "Whitney", Helvetica, sans-serif;
-        font-size: 16px;
-      }
-
-      #subtitle1, #subtitle2 {  /* chart titles */
-        font-family: "Whitney", Helvetica, sans-serif;
-        font-size: 20px;
-        text-align: center;
-        font-weight: bold;
-      }
-
-      #legend {
-        height: 100%;
-        float: right;
-        font-family: "Whitney", Helvetica, sans-serif;
-        font-size: 14px;
-        fill: #000;
-      }
-
-      #legend_square {
-        width: 20px;
-        height: 20px;
-
-      }
-
-      footer {font-size: small;margin-top: 8em;clear:both;}
-
-      form {  /* "Student ID" text */
-        font-family: "Whitney", Helvetica, sans-serif;
-        font-size: 16px;
-      }
-
-      #p2 {   /* can't see what this changes */
-        font-family: "Whitney", Helvetica, sans-serif;
-        font-size: 8px;
-      }
-
-/* Self Chart */
-      #chart {
-        font-family: "Whitney", Helvetica, sans-serif;
-        font-size: 14px;
-      }
-
-      #chart path {
-        fill: none;
-      }
-
-      /* Circles and Spokes */
-      #chart circle.outer { /* outermost circle */
-        stroke: #ddd;
-      /*stroke-dasharray: 4, 4;*/
-        stroke-width: 0.8;
-      }
-
-      #chart .tick-circles circle { /* inner circles */
-      /*stroke: #ddd; 
-        stroke-dasharray: 4, 4; /* 1st number = stroke length, 2nd number = gap length */
-      }
-
-      #chart .spokes line { /* pizza slices */
-        stroke: #ccc;
-        stroke-width: 0.4;
-      }
-
-      /* Axis */
-      #chart .axis text { /* number text on y-axis */
-        font-size: 11px;
-      }
-      #chart .axis path { /* y-axis itself with numbers */
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
-      #chart .axis line { /* y-axis tick marks */
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
-      #chart .labels text { /* pizza slice labels, or tactic names */
-        fill: #000;
-        font-size: 11px;
-        font-weight: 800;
-      }
-
-/* 360 Chart (just duplicating Self Chart) */
-      #chart2 {
-        font-family: "Whitney", Helvetica, sans-serif;
-        font-size: 14px;
-      }
-      #chart2 path {
-        fill: none;
-      }
-      /* Circles and Spokes */
-      #chart2 circle.outer {  /* outermost circle */
-        stroke: #ddd;
-      /*stroke-dasharray: 4, 4;*/
-        stroke-width: 0.8; /* added this */
-      }
-      #chart2 .tick-circles circle {  /* inner circles */
-      /*stroke: #ddd;
-        stroke-dasharray: 4, 4; /* 1st number = stroke length, 2nd number = gap length */
-      }
-      #chart2 .spokes line {  /* pizza slices */
-        stroke: #ccc;
-        stroke-width: 0.4;
-      }
-      /* Axis */
-      #chart2 .axis text {  /* number text on y-axis */
-        font-size: 11px;
-      }
-      #chart2 .axis path {  /* y-axis itself with numbers */
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
-      #chart2 .axis line {  /* y-axis tick marks */
-        stroke: #000;
-        shape-rendering: crispEdges;
-      }
-      #chart2 .labels text {  /* pizza slice labels, or tactic names */
-        fill: #000;
-        font-size: 11px;
-        font-weight: 800;
-      }
-
-/* Is this necessary? */
-      #self_relative, #third_relative {
-          width: 40%; height: 100%; 
-        }
-
-/* Media query to bump charts underneath each other */
-      @media screen and (max-width: 1100px) {
-        #self_relative, #third_relative {
-          float: none;
-          width: 100%;
-        }
-        #third_relative {
-          margin-top: 50px;
-        }
-      }
-
-  </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-<h1>Leverage Inventory Results</h1>
+  <h1>Leverage Inventory Results</h1>
+  <div id="legend">
+    <svg id="legend_box" width="120" height="150">
+      <rect x="0" y="0" fill="#ff7f7f" id="legend_square"/>
+      <text x="24" y="13">Hard Power</text>
+      <rect x="0" y="40" fill="#9999ff" id="legend_square"/>
+      <text x="24" y="53">Soft Power</text>
+      <rect x="0" y="80" fill="#abf9b4" id="legend_square"/>
+      <text x="24" y="93">Smart Power</text>
+    </svg>
+  </div>
 
-<!-- Legend -->
-<div id="legend">
-  <svg id="legend_box" width="100" height="150">
-    <rect x="0" y="0" fill="#ff7f7f" id="legend_square"/> 
-    <text x="24" y="13">Hard Power</text>
-    <rect x="0" y="40" fill="#9999ff" id="legend_square"/> 
-    <text x="24" y="53">Soft Power</text>
-    <rect x="0" y="80" fill="#abf9b4" id="legend_square"/> 
-    <text x="24" y="93">Smart Power</text>
-  </svg>
-</div>
+  <form action="action_page.php"> <!-- form -->
+    Student ID: <!-- form header text -->
+    <input type="number" name="studentIdInput"
+     min="1" max="218" step="any" value="1" id="studentIdInput">   <!-- form entry text - how to determine max?-->   <!-- note: #nValue is important in D3 below, when updating the circle to match Student ID's data-->
+  </form>
 
-<form action="action_page.php"> <!-- form -->
-  Student ID: <!-- form header text -->
-  <input type="number" name="points"
-   min="1" max="218" step="any" value="10" id="nValue" style="font: 12pt Whitney; text-align: right; width: 5.75ch; height: 1.75em">   <!-- form entry text - how to determine max?-->   <!-- note: #nValue is important in D3 below, when updating the circle to match Student ID's data-->
-</form>
+  <div style="float:left;" id="self_relative"> <!-- KW correct chart width to match header width, plus move styling to header -->
+    <p id="subtitle1">Self-Assessment</p>   <!-- KW change float so don't overlap with collapsing screen: insert media queries -->
+    <div class = "chart" id="chart1"></div>    <!-- cirlce falls outside this div - fix? -->
+  </div>
 
-<div style="float:left;" id="self_relative"> <!-- KW correct chart width to match header width, plus move styling to header -->
-  <p id="subtitle1">Self</p>   <!-- KW change float so don't overlap with collapsing screen: insert media queries -->
-  <div style="float: center;" id = "chart"></div>    <!-- cirlce falls outside this div - fix? -->
-</div>
+  <div style="float:right;" id="third_relative">
+    <p id="subtitle2">3rd Party Assessment</p>   <!-- KW change float so don't overlap with collapsing screen: insert media queries -->
+    <div class = "chart" id="chart2"></div>   <!-- cirlce falls outside this div - fix? -->
+  </div>
 
-<div style="float:right;" id="third_relative">
-  <p id="subtitle2">360&#176</p>   <!-- KW change float so don't overlap with collapsing screen: insert media queries -->
-  <div id = "chart2"></div>   <!-- cirlce falls outside this div - fix? -->
-</div>
+  <div id="holder" style="width: 100%; height: 50%; clear:both"> <!-- note clear:both because on separate row from charts -->
+    <p id="p1"><br><br>Each wedge shows your score for a particular influence strategy. The scale is frequency-of-use, in percentiles, relative to full-time Wharton MBAs in the 2016 classes (n=217). "3rd-party Ratings" are relative to other students' 3rd-party ratings (aka “Section IV. Benchmark Comparison” in your Leverage Inventory report) and “Self Ratings” are relative to other students’ self ratings (not reported in your Leverage Inventory report).</p>    <!-- this break doesn't seem efficient >> KW add padding/margin styling to header -->
 
-    <div id="holder" style="width: 100%; height: 50%; clear:both"> <!-- note clear:both because on separate row from charts -->
-    <p id="p1"><br><br>Each wedge shows your score for a particular influence strategy. The scale is frequency-of-use, in percentiles, relative to full-time Wharton MBAs in the 2016 classes (n=217). "3rd-party Ratings" are relative to other students' 3rd-party ratings (aka “Section IV. Benchmark Comparison” in your Leverage Inventory report) and “Self Ratings” are relative to other students’ self ratings (not reported in your Leverage Inventory report).</p>    <!-- this break doesn't seem efficient >> KW add padding/margin styling to header --> 
-
-<footer>
-  <aside> Visualization created using <a href="https://d3js.org">D3.js</a>, <a href="http://opensource.org/licenses/BSD-3-Clause">Terms of use</a>.</aside>
-  Copyright Monica Wojciechowski, 2015.
-</footer>
-    </div>
-<!-- Monica code end -->
+    <footer>
+      <aside> Visualization created using <a href="https://d3js.org">D3.js</a>, <a href="http://opensource.org/licenses/BSD-3-Clause">Terms of use</a>.</aside>
+      Copyright Monica Wojciechowski, 2018.
+    </footer>
+  </div>
 
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="radialBarChart.js"></script>
-<script>
+<script src="createCharts.js"></script>
 
-/* Monica code start - pulling in csv data */
-
-var levdata = "levdatasample.csv";
-var result = 1;   /* setting up for reference in var self relative below - subtracting student ID number from 1 to get correct index number for their data */
-d3.csv(levdata, function(data) {
-    dataset = data.map(function(d) {return {    /* map function generates new array of every element that resulted from passing another array through a function */
-        id_random:d.id_random, 
-        Network1:+d.Network1, /* pass field header and datum in field through through the function*/
-        Coalition1:+d.Coalition1,
-        Pathos1:+d.Pathos1,
-        Team1:+d.Team1,
-        Exchange1:+d.Exchange1,
-        Allocentrism1:+d.Allocentrism1,
-        Agency1:+d.Agency1,
-        SA1:+d.SA1,
-        Intentionality1:+d.Intentionality1,
-        Logos1:+d.Logos1,
-        Might1:+d.Might1,
-        Ethos1:+d.Ethos1,
-        Network3:+d.Network3,
-        Coalition3:+d.Coalition3,
-        Pathos3:+d.Pathos3,
-        Team3:+d.Team3,
-        Exchange3:+d.Exchange3,
-        Allocentrism3:+d.Allocentrism3,
-        Agency3:+d.Agency3,
-        SA3:+d.SA3,
-        Intentionality3:+d.Intentionality3,
-        Logos3:+d.Logos3,
-        Might3:+d.Might3,
-        Ethos3:+d.Ethos3,
-    };
-});
-/*update the data with input of student id number*/
-var self_relative = [
-  {
-  "data": {
-    
-    "Network": dataset[result-1].Network1,  /* see explanation next to var result above */
-    "Team-building": dataset[result-1].Team1,
-    "Exchange": dataset[result-1].Exchange1,
-    "Allocentrism": dataset[result-1].Allocentrism1,
-    "Situation Awareness": dataset[result-1].SA1,
-    "Agency": dataset[result-1].Agency1,
-    "Intentionality": dataset[result-1].Intentionality1,
-    "Logos": dataset[result-1].Logos1,
-    "Might": dataset[result-1].Might1,
-    "Ethos": dataset[result-1].Ethos1,
-    "Coalition": dataset[result-1].Coalition1,
-    "Pathos": dataset[result-1].Pathos1,
-    }
-  }
-];
-/*//update the data with input of student id number*/
-var third_relative = [
-  {
-  "data": {
-   
-   "Network": dataset[result-1].Network3,
-    "Team-building": dataset[result-1].Team3,
-    "Exchange": dataset[result-1].Exchange3,
-    "Allocentrism": dataset[result-1].Allocentrism3,
-    "Situation Awareness": dataset[result-1].SA3,
-    "Agency": dataset[result-1].Agency3,
-    "Intentionality": dataset[result-1].Intentionality3,
-    "Logos": dataset[result-1].Logos3,
-    "Might": dataset[result-1].Might3,
-    "Ethos": dataset[result-1].Ethos3,
-    "Coalition": dataset[result-1].Coalition3, 
-    "Pathos": dataset[result-1].Pathos3,
-    }
-  }
-];
-/* Monica code end */
-
-var chart1 = radialBarChart()   /* defining chart1 and chart2 b/c calling on them in D3 below */  /* Monica did rename from chart to chart1 */
-  .barHeight(225)   /* Monica changed */
-  /* add bar width here to match subtitle width? */
-  .reverseLayerOrder(true)
-  .capitalizeLabels(true)
-  .barColors([ '#9999ff'/* Network */, '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff' /* Pathos */,])  /* can define bar colors b/c fixed location of tactics around circle */
-  .domain([1,4])
-  .tickValues([1,2,3,4])
-  .tickCircleValues([1,2,3]);
-  d3.select('#chart')       /* Monica changed sequence of this - does it matter */
-    .datum(self_relative)   /* Monica changed reference to array defined above */
-    .call(chart1);
-
-/* Monica code start - duplicated chart1 for 2nd chart */
-var chart2 = radialBarChart()
-  .barHeight(225)
-  .reverseLayerOrder(true)
-  .capitalizeLabels(true)
-  .barColors([ '#9999ff', '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff',])
-  .domain([0,4])
-  .tickValues([1,2,3,4])
-  .tickCircleValues([1,2,3]); /* where cirlces line up with ticks */
-  d3.select('#chart2')
-    .datum(third_relative)
-    .call(chart2);
-/* Monica code end */
-
-/*// when the input range changes update the circle */
-d3.select("#nValue").on("input", function() {   /* #nValue define when Student ID form created above (start of body) */
-  update(+this.value);
-});
-/*// Initial starting radius of the circle*/ 
-update(1);  /* what? */
-result = document.getElementById('nValue').value;   /* what? */
-/*// update the elements*/
-function update(nValue) {
-/*  // adjust the text on the range slider*/   /* currently entry form not range slider */
-  d3.select("#nValue-value").text(nValue);
-  d3.select("#nValue").property("value", nValue);
-/*  //get the new Student ID*/
-  result = document.getElementById('nValue').value;
-/*//update the data with new ID*/
-var self_relative = [   /* is there a way to not repeat this from above? */
-  {
-  "data": {
-   
-    "Network": dataset[result-1].Network1, 
-    "Team-building": dataset[result-1].Team1,
-    "Exchange": dataset[result-1].Exchange1,
-    "Allocentrism": dataset[result-1].Allocentrism1,
-    "Situation Awareness": dataset[result-1].SA1,
-    "Agency": dataset[result-1].Agency1,
-    "Intentionality": dataset[result-1].Intentionality1,
-    "Logos": dataset[result-1].Logos1,
-    "Might": dataset[result-1].Might1,
-    "Ethos": dataset[result-1].Ethos1,
-    "Coalition": dataset[result-1].Coalition1, 
-    "Pathos": dataset[result-1].Pathos1,
-    }
-  }
-];
-/*  // update the chart with new data*/
-  d3.select("#chart") 
-    .datum(self_relative)
-    .call(chart1);
-/*//update the data with input of student id number*/
-var third_relative = [
-  {
-  "data": {
- 
-    "Network": dataset[result-1].Network3,
-    "Team-building": dataset[result-1].Team3,
-    "Exchange": dataset[result-1].Exchange3,
-    "Allocentrism": dataset[result-1].Allocentrism3,
-    "Situation Awareness": dataset[result-1].SA3,
-    "Agency": dataset[result-1].Agency3,
-    "Intentionality": dataset[result-1].Intentionality3,
-    "Logos": dataset[result-1].Logos3,
-    "Might": dataset[result-1].Might3,
-    "Ethos": dataset[result-1].Ethos3,
-    "Coalition": dataset[result-1].Coalition3, 
-    "Pathos": dataset[result-1].Pathos3,
-    }
-  }
-];
-/*  // update the chart with new data*/
-  d3.select("#chart2") 
-    .datum(third_relative)
-    .call(chart2);
-}
-});
-    </script>
   </body>
 </html>

@@ -1,0 +1,202 @@
+body {
+  padding: $padding;  /* padding from top of page */
+  font-family: $font-family;
+}
+
+@media print {
+  body {-webkit-print-color-adjust: exact;}
+}
+
+h1 {
+  font-size: 30px;
+}
+
+.color-legend {
+  width: 120px;
+  height: 100px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  float: right;
+  div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    .legend-square {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      &.hard {
+        background-color: #ff7f7f
+      }
+      &.soft {
+        background-color: #9999ff
+      }
+      &.smart {
+        background-color: #abf9b4
+      }
+    }
+  }
+}
+
+.legend {
+  float: right;
+  font-size: 14px;
+  .legend-square {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+footer {
+  font-size: small;
+  margin-top: 8em;
+  clear:both;
+}
+
+.selected-student {
+  font-size: 16px;
+  #studentIdInput {
+    font-size: 12px;
+    text-align: right;
+    width: 5.75ch;
+    height: 1.75em
+  }
+  label {
+    padding: 5px;
+  }
+}
+
+/*Chart Layout*/
+.chart-holder {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+@media screen and (max-width: 600px) {
+  #self, #third {
+    width: 100%;
+  }
+  #third {
+    margin-top: 50px;
+  }
+}
+
+.chart-holder p{
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Chart Styling */
+.chart {
+  font-family: "Whitney", Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.chart path {
+  fill: none;
+}
+
+/* Circles and Spokes */
+.chart circle.outer { /* outermost circle */
+  stroke: #ddd;
+  stroke-width: 0.8;
+}
+
+.chart .spokes line { /* pizza slices */
+  stroke: #ccc;
+  stroke-width: 0.4;
+}
+
+/* Axis */
+.chart .axis text { /* number text on y-axis */
+  font-size: 11px;
+}
+.chart .axis path { /* y-axis itself with numbers */
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.chart .axis line { /* y-axis tick marks */
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+.chart .labels text { /* pizza slice labels, or tactic names */
+  fill: #000;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Media query to bump charts underneath each other */
+@media screen and (max-width: 600px) {
+  #self, #third {
+    width: 100%;
+  }
+  #third {
+    margin-top: 50px;
+  }
+}
+
+.description-holder{
+  width: 100%;
+  clear: both;
+  p {
+    font-size: 16px;
+  }
+}
+
+.type-toggle{
+  width: 300px;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  button {
+    border: none;
+    padding: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    &:hover {
+      color: mediumpurple;
+    }
+  }
+  button:first-of-type {
+    border-right: 1px solid black;
+  }
+}
+
+.button-clicked {
+  color: red;
+  font-weight: bold;
+}
+
+.percentile-options {
+  fieldset {
+    width: 300px;
+  }
+  .options {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    div {
+      padding: 10px;
+    }
+    .radio {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.hidden {
+  display: none;
+}

@@ -78,16 +78,7 @@ footer {
   align-items: flex-start;
 }
 
-@media screen and (max-width: 600px) {
-  #self, #third {
-    width: 100%;
-  }
-  #third {
-    margin-top: 50px;
-  }
-}
-
-.chart-holder p{
+.chart-holder p {
   font-size: 20px;
   text-align: center;
   font-weight: bold;
@@ -95,41 +86,36 @@ footer {
 
 /* Chart Styling */
 .chart {
-  font-family: "Whitney", Helvetica, sans-serif;
   font-size: 14px;
-}
-
-.chart path {
-  fill: none;
-}
-
-/* Circles and Spokes */
-.chart circle.outer { /* outermost circle */
-  stroke: #ddd;
-  stroke-width: 0.8;
-}
-
-.chart .spokes line { /* pizza slices */
-  stroke: #ccc;
-  stroke-width: 0.4;
-}
-
-/* Axis */
-.chart .axis text { /* number text on y-axis */
-  font-size: 11px;
-}
-.chart .axis path { /* y-axis itself with numbers */
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-.chart .axis line { /* y-axis tick marks */
-  stroke: #000;
-  shape-rendering: crispEdges;
-}
-.chart .labels text { /* pizza slice labels, or tactic names */
-  fill: #000;
-  font-size: 11px;
-  font-weight: 800;
+  path {
+    fill: none;
+  }
+  circle.outer { /* outermost circle */
+    stroke: #ddd;
+    stroke-width: 0.8;
+  }
+  .spokes line { /* pizza slices */
+    stroke: #ccc;
+    stroke-width: 0.4;
+  }
+  .axis {
+    text { /* number text on y-axis */
+      font-size: 11px;
+    }
+    path { /* y-axis itself with numbers */
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    line { /* y-axis tick marks */
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+  }
+  .labels text { /* pizza slice labels, or tactic names */
+    fill: #000;
+    font-size: 11px;
+    font-weight: 800;
+  }
 }
 
 /* Media query to bump charts underneath each other */
@@ -198,5 +184,13 @@ footer {
 }
 
 .hidden {
-  display: none;
+  transition: opacity 1s ease-out;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.active {
+  transition: opacity 1s ease-out;
+  opacity: 1;
 }

@@ -53,13 +53,15 @@
   </form>
 
   <div class="chart-holder">
-    <div id="self">
+    <div class="self">
       <p>Self-Assessment</p>   <!-- KW change float so don't overlap with collapsing screen: insert media queries -->
-      <div class= "chart" id="chart1"></div>
+      <div class= "chart" id="chart1abs"></div>
+      <div class= "chart hidden" id="chart1perc"></div>
     </div>
-    <div id="third">
+    <div class="third">
       <p>3rd Party Assessment</p>   <!-- KW change float so don't overlap with collapsing screen: insert media queries -->
-      <div class= "chart" id="chart2"></div>   <!-- cirlce falls outside this div - fix? -->
+      <div class= "chart" id="chart2abs"></div>   <!-- cirlce falls outside this div - fix? -->
+      <div class= "chart hidden" id="chart2perc"></div>
     </div>
   </div>
 

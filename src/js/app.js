@@ -3,8 +3,8 @@ const levdata = "levdatasample.csv";
 d3.csv(levdata, function(data) {
 
     //initialize charts with student id = 1
-    const type='Absolute';
-    const studentId = 1;
+    let type='Absolute';
+    let studentId = 1;
     const chartData = getStudentData(data,studentId,type);
     const self_data = chartData[0];
     const third_data = chartData[1];
@@ -24,8 +24,10 @@ d3.csv(levdata, function(data) {
             this.classList.add('button-clicked');
             update(data,document.querySelector("#studentIdInput").value,this.innerText);
             if (this.innerText === 'Percentile') {
+                type='Percentile';
                 document.querySelector(".percentile-options").classList.remove('hidden');
             } else {
+                type='Absolute';
                 document.querySelector(".percentile-options").classList.add('hidden');
             }
         });
@@ -41,11 +43,11 @@ d3.csv(levdata, function(data) {
 function update(data,studentId,type) {
     d3.select("#studentIdInput").text(studentId);
     d3.select("#studentIdInput").property("value", studentId);
-    const result = document.getElementById('studentIdInput').value;
-    const chartData = getStudentData(data,result,type);
+    const chartData = getStudentData(data,studentId,type);
     const self_data = chartData[0];
     const third_data = chartData[1];
     if (type==='Absolute') {
+
         constructCharts(self_data,third_data);
     } else {
         constructPercentileCharts(self_data,third_data);
@@ -404,8 +406,9 @@ function getArrayForPercentRank(data,string){
 }
 
 function constructPercentileCharts(data1,data2) {
+    console.log('constructing percentile');
     const chartStyling = radialBarChart()
-        .barHeight(225)
+        .barHeight(220)
         .reverseLayerOrder(true)
         .capitalizeLabels(true)
         .barColors([ '#9999ff', '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff' /* Pathos */,])  /* can define bar colors b/c fixed location of tactics around circle */
@@ -413,17 +416,28 @@ function constructPercentileCharts(data1,data2) {
         .tickValues([0.25,0.50,0.75,1.0])
         .tickCircleValues([.25,.50,.75]);
 
-    d3.select('#chart1')
+    document.querySelector("#chart1abs").classList.add('hidden');
+    document.querySelector("#chart2abs").classList.add('hidden');
+    document.querySelector("#chart1abs").classList.remove('active');
+    document.querySelector("#chart2abs").classList.remove('active');
+    document.querySelector("#chart1perc").classList.remove('hidden');
+    document.querySelector("#chart2perc").classList.remove('hidden');
+    document.querySelector("#chart1perc").classList.add('active');
+    document.querySelector("#chart2perc").classList.add('active');
+
+    d3.select('#chart1perc')
         .datum(data1)
         .call(chartStyling);
-    d3.select('#chart2')
+    d3.select('#chart2perc')
         .datum(data2)
         .call(chartStyling);
+
 }
 
 function constructCharts(data1,data2) {
+    console.log('constructing absolute');
     const chartStyling = radialBarChart()
-        .barHeight(225)
+        .barHeight(220)
         .reverseLayerOrder(true)
         .capitalizeLabels(true)
         .barColors([ '#9999ff', '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff' /* Pathos */,])  /* can define bar colors b/c fixed location of tactics around circle */
@@ -431,10 +445,19 @@ function constructCharts(data1,data2) {
         .tickValues([1,2,3,4])
         .tickCircleValues([1,2,3]);
 
-    d3.select('#chart1')
+    document.querySelector("#chart1perc").classList.add('hidden');
+    document.querySelector("#chart2perc").classList.add('hidden');
+    document.querySelector("#chart1perc").classList.remove('active');
+    document.querySelector("#chart2perc").classList.remove('active');
+    document.querySelector("#chart1abs").classList.remove('hidden');
+    document.querySelector("#chart2abs").classList.remove('hidden');
+    document.querySelector("#chart1abs").classList.add('active');
+    document.querySelector("#chart2abs").classList.add('active');
+
+    d3.select('#chart1abs')
         .datum(data1)
         .call(chartStyling);
-    d3.select('#chart2')
+    d3.select('#chart2abs')
         .datum(data2)
         .call(chartStyling);
 }

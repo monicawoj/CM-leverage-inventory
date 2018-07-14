@@ -24,7 +24,9 @@ d3.csv(levdata, function(data) {
             this.classList.add('button-clicked');
             update(data,document.querySelector("#studentIdInput").value,this.innerText);
             if (this.innerText === 'Percentile') {
-
+                document.querySelector(".percentile-options").classList.remove('hidden');
+            } else {
+                document.querySelector(".percentile-options").classList.add('hidden');
             }
         });
     });

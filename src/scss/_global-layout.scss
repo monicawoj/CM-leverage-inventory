@@ -1,14 +1,47 @@
+@media print {
+  @page {
+    margin: 1in;
+  }
+}
+
 body {
   padding: $padding;  /* padding from top of page */
   font-family: $font-family;
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      width: 900px;
+    }
+  }
 }
 
-@media print {
-  body {-webkit-print-color-adjust: exact;}
-}
-
-h1 {
-  font-size: 30px;
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  h1 {
+    font-size: 28px;
+  }
+  a {
+    font-size: 16px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+    border-style: solid;
+    border-width: 1px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    &:hover {
+      color: mediumpurple;
+      background-color: #f9f8fb;
+    }
+    @media print {
+      display: none;
+    }
+  }
 }
 
 .color-legend {
@@ -54,10 +87,16 @@ footer {
   font-size: small;
   margin-top: 8em;
   clear:both;
+  @media print {
+    display: none;
+  }
 }
 
 .selected-student {
   font-size: 16px;
+  @media print {
+    display: none;
+  }
   #studentIdInput {
     font-size: 12px;
     text-align: right;
@@ -78,10 +117,54 @@ footer {
   align-items: flex-start;
 }
 
-.chart-holder p {
-  font-size: 20px;
-  text-align: center;
-  font-weight: bold;
+.chart-holder {
+  @media print {
+    page-break-after: always;
+    h2 {
+      font-size: 18px;
+      margin: 0;
+      padding: 10px;
+    }
+  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  @media screen and (min-width: $break) {
+    flex-direction: row;
+  }
+  .self, .third {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    @media screen and (min-width: $break) {
+        width: 50%;
+    }
+    @media print {
+      width: 100%;
+    }
+    p {
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold;
+      @media print {
+        font-size: 14px;
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+  .third {
+    margin-top: 50px;
+    @media screen and (min-width: $break) {
+      margin-top: 0;
+    }
+    @media print {
+      margin-top: 0;
+    }
+  }
 }
 
 /* Chart Styling */
@@ -115,16 +198,6 @@ footer {
     fill: #000;
     font-size: 11px;
     font-weight: 800;
-  }
-}
-
-/* Media query to bump charts underneath each other */
-@media screen and (max-width: 600px) {
-  #self, #third {
-    width: 100%;
-  }
-  #third {
-    margin-top: 50px;
   }
 }
 

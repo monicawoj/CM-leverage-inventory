@@ -8,11 +8,8 @@ d3.csv(levdata, function(data) {
     const chartData = getStudentData(data,studentId,type);
     const self_data = chartData[0];
     const third_data = chartData[1];
-    if (type==='Absolute') {
-        constructCharts(self_data,third_data);
-    } else {
-        constructPercentileCharts(self_data,third_data);
-    }
+    constructCharts(self_data,third_data);
+    update(data,document.querySelector("#studentIdInput").value,'Percentile');
 
     //update charts when absolute/percentile toggle changes
     document.querySelectorAll(".type-toggle button").forEach(button => {
@@ -47,7 +44,6 @@ function update(data,studentId,type) {
     const self_data = chartData[0];
     const third_data = chartData[1];
     if (type==='Absolute') {
-
         constructCharts(self_data,third_data);
     } else {
         constructPercentileCharts(self_data,third_data);
@@ -422,15 +418,6 @@ function constructPercentileCharts(data1,data2) {
         .tickValues([0.25,0.50,0.75,1.0])
         .tickCircleValues([.25,.50,.75]);
 
-    document.querySelector("#chart1abs").classList.add('hidden');
-    document.querySelector("#chart2abs").classList.add('hidden');
-    document.querySelector("#chart1abs").classList.remove('active');
-    document.querySelector("#chart2abs").classList.remove('active');
-    document.querySelector("#chart1perc").classList.remove('hidden');
-    document.querySelector("#chart2perc").classList.remove('hidden');
-    document.querySelector("#chart1perc").classList.add('active');
-    document.querySelector("#chart2perc").classList.add('active');
-
     d3.select('#chart1perc')
         .datum(data1)
         .call(chartStyling);
@@ -450,15 +437,6 @@ function constructCharts(data1,data2) {
         .domain([0,4])
         .tickValues([1,2,3,4])
         .tickCircleValues([1,2,3]);
-
-    document.querySelector("#chart1perc").classList.add('hidden');
-    document.querySelector("#chart2perc").classList.add('hidden');
-    document.querySelector("#chart1perc").classList.remove('active');
-    document.querySelector("#chart2perc").classList.remove('active');
-    document.querySelector("#chart1abs").classList.remove('hidden');
-    document.querySelector("#chart2abs").classList.remove('hidden');
-    document.querySelector("#chart1abs").classList.add('active');
-    document.querySelector("#chart2abs").classList.add('active');
 
     d3.select('#chart1abs')
         .datum(data1)

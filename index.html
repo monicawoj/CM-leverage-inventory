@@ -10,7 +10,10 @@
   </head>
 
 <body>
-  <h1>Leverage Inventory Results</h1>
+  <div class="header">
+    <h1>Leverage Inventory Results</h1>
+    <a id='print-button' href="javascript: w=window.open('./print_results.html'); w.print();">Print Results</a>
+  </div>
   <div class="color-legend">
     <div>
       <div class="legend-square hard"></div>
@@ -54,18 +57,18 @@
 
   <div class="chart-holder">
     <div class="self">
-      <p>Self-Assessment</p>   <!-- KW change float so don't overlap with collapsing screen: insert media queries -->
+      <p>Self-Assessment</p>
       <div class= "chart" id="chart1abs"></div>
       <div class= "chart hidden" id="chart1perc"></div>
     </div>
     <div class="third">
-      <p>3rd Party Assessment</p>   <!-- KW change float so don't overlap with collapsing screen: insert media queries -->
-      <div class= "chart" id="chart2abs"></div>   <!-- cirlce falls outside this div - fix? -->
+      <p>3rd Party Assessment</p>
+      <div class= "chart" id="chart2abs"></div>
       <div class= "chart hidden" id="chart2perc"></div>
     </div>
   </div>
 
-  <div class="description-holder"> <!-- note clear:both because on separate row from charts -->
+  <div class="description-holder">
     <p>Each wedge shows your score for a particular influence strategy. The scale is frequency-of-use, in percentiles, relative to full-time Wharton MBAs in the 2016 classes (n=217). "3rd-party Ratings" are relative to other students' 3rd-party ratings (aka “Section IV. Benchmark Comparison” in your Leverage Inventory report) and “Self Ratings” are relative to other students’ self ratings (not reported in your Leverage Inventory report).</p>
     <footer>
       Copyright <a href="http://monicawojciechowski.com">Monica Wojciechowski</a>, 2018.

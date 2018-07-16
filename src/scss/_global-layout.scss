@@ -2,6 +2,9 @@
   @page {
     margin: 1in;
   }
+  * {
+    -webkit-print-color-adjust: exact;
+  }
 }
 
 body {
@@ -9,7 +12,6 @@ body {
   font-family: $font-family;
   @media print {
     body {
-      -webkit-print-color-adjust: exact;
       width: 900px;
     }
   }

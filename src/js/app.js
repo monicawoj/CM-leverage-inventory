@@ -6,6 +6,8 @@ d3.csv(levdata, function(data) {
     let type='Absolute';
     let studentId = 1;
     let group = 'group1';
+    let hasEnough360Ratings = 1;
+    let hasThirdAndSelf = 1;
     const chartData = getStudentData(data,studentId,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
@@ -260,12 +262,6 @@ function radialBarChart() {
             .attr('xlink:href', '#label-path')
             .attr('startOffset', function(d, i) {return i * 100 / numBars + 50 / numBars + '%';})
             .text(function(d) {return capitalizeLabels ? d.toUpperCase() : d;});
-    }
-
-    // Computes the angle of an arc, converting from radians to degrees.
-    function angle(d) {
-        var a = (d.startAngle + d.endAngle) * 90 / Math.PI - 90;
-        return a > 90 ? a - 180 : a;
     }
 
     function chart(selection) {

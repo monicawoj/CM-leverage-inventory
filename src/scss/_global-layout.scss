@@ -1,7 +1,4 @@
 @media print {
-  @page {
-    margin: 1in;
-  }
   * {
     -webkit-print-color-adjust: exact;
   }
@@ -11,11 +8,22 @@ body {
   padding: $padding;  /* padding from top of page */
   font-family: $font-family;
   @media print {
-    body {
-      width: 900px;
-    }
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    //width: 900px;
   }
 }
+
+@media print {
+  .page {
+    width: 6.8in;
+    height: 10in;
+    margin: 0.5in 0.8in;
+  }
+}
+
 
 .header {
   display: flex;
@@ -24,6 +32,9 @@ body {
   align-items: center;
   h1 {
     font-size: 28px;
+  }
+  h2 {
+    font-size: 24px;
   }
   a {
     font-size: 16px;
@@ -46,6 +57,10 @@ body {
   }
 }
 
+.header-name {
+  margin: 0;
+}
+
 .color-legend {
   width: 120px;
   height: 100px;
@@ -53,7 +68,6 @@ body {
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
-  float: right;
   div {
     display: flex;
     flex-direction: row;
@@ -99,11 +113,14 @@ footer {
   @media print {
     display: none;
   }
-  #studentIdInput {
+  #userIdInput {
     font-size: 12px;
     text-align: right;
     width: 5.75ch;
-    height: 1.75em
+    height: 1.75em;
+    @media print {
+      display: none;
+    }
   }
   label {
     padding: 5px;
@@ -112,16 +129,9 @@ footer {
 
 /*Chart Layout*/
 .chart-holder {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.chart-holder {
   @media print {
-    page-break-after: always;
+
+    flex-direction: row;
     h2 {
       font-size: 18px;
       margin: 0;
@@ -166,6 +176,11 @@ footer {
     @media print {
       margin-top: 0;
     }
+  }
+  p.chart-description {
+    font-style: italic;
+    font-size: 12px;
+    font-weight: lighter;
   }
 }
 
@@ -269,3 +284,8 @@ footer {
   transition: opacity 1s ease-out;
   opacity: 1;
 }
+
+.purple {
+  color: mediumpurple;
+}
+

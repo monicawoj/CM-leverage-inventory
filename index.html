@@ -14,6 +14,7 @@
     <h1>Leverage Inventory Results</h1>
     <a id='print-button' href="javascript: w=window.open('./print_results.html'); w.print();">Print Results</a>
   </div>
+
   <div class="color-legend">
     <div>
       <div class="legend-square hard"></div>
@@ -30,9 +31,9 @@
   </div>
 
   <form class="selected-student" action="action_page.php">
-    <label>Student ID:</label>
-    <input type="number" name="studentIdInput"
-     min="1" max="218" step="any" value="1" id="studentIdInput">   <!-- form entry text - how to determine max?-->   <!-- note: #nValue is important in D3 below, when updating the circle to match Student ID's data-->
+    <!--<label>Student ID:</label>-->
+    <!--<input type="number" name="userIdInput"-->
+     <!--min="1" max="218" step="any" value="1" id="userIdInput">-->
     <div class="type-toggle">
       <button class="absolute">Absolute</button>
       <button class="percentile">Percentile</button>
@@ -75,5 +76,6 @@
     </footer>
   </div>
 
-  </body>
+</body>
+
 </html>

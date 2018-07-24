@@ -2,56 +2,64 @@ const levdata = "levdatasample.csv";
 
 d3.csv(levdata, function(data) {
 
-    //initialize charts with student id = 1
     let type='Absolute';
-    let studentId = 1;
-    const chartData = getStudentData(data,studentId,type);
+    //let userId = 1;
+    let group = 'group1';
+    let userId = getCookie('userId');
+    //let hasThirdAndSelf = 1; should not be necessary, as the above flag will be false if no 3rd party data at all
+    const hasEnough360Ratings = data[userId-1].hasEnough360Ratings;
+    console.log(hasEnough360Ratings);
+    const chartData = getStudentData(data,userId,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
-    constructCharts(self_data,third_data);
-    update(data,document.querySelector("#studentIdInput").value,'Percentile');
+    constructCharts(self_data,third_data,hasEnough360Ratings);
+    update(data,userId,'Percentile',group,hasEnough360Ratings);
 
-    //update charts when absolute/percentile toggle changes
-    document.querySelectorAll(".type-toggle button").forEach(button => {
-        button.addEventListener("click", function(event) {
-            event.preventDefault();
-            document.querySelectorAll(".type-toggle button").forEach(button => {
-                button.classList.remove('button-clicked');
-            });
-            this.classList.add('button-clicked');
-            update(data,document.querySelector("#studentIdInput").value,this.innerText);
-            if (this.innerText === 'Percentile') {
-                type='Percentile';
-                document.querySelector(".percentile-options").classList.remove('hidden');
-            } else {
-                type='Absolute';
-                document.querySelector(".percentile-options").classList.add('hidden');
-            }
-        });
-    });
+    //header with custom name and today's date
+    const name = `<span class="purple">Name:</span> ${data[userId-1].first_name} ${data[userId-1].last_name}`;
+    const date = new Date();
+    let dd = date.getDate();
+    let mm = date.getMonth()+1;
+    const yyyy = date.getFullYear();
 
-    //update charts when studentId changes
-    d3.select("#studentIdInput").on("input", function() {
-        update(data,+this.value,type);
-    });
+    if (dd<10) {
+        dd = '0'+dd;
+    }
+    if (mm<10) {
+        mm = '0'+mm;
+    }
+
+    const today = `<span class="purple">Date:</span> ${mm}/${dd}/${yyyy}`;
+
+    document.querySelector('.header-name').innerHTML = name;
+    document.querySelector('.header-date').innerHTML = today;
+
 
 });
 
-function update(data,studentId,type) {
-    d3.select("#studentIdInput").text(studentId);
-    d3.select("#studentIdInput").property("value", studentId);
-    const chartData = getStudentData(data,studentId,type);
+function getValue(group) {
+    let result = 'null';
+    document.getElementsByName(group).forEach(element => {
+        if (element.checked) {
+            result = element.id;
+        }
+    });
+    return result;
+}
+
+function update(data,userId,type,group,hasEnough360Ratings) {
+    const chartData = getStudentData(data,userId,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
     if (type==='Absolute') {
-        constructCharts(self_data,third_data);
+        constructCharts(self_data,third_data,hasEnough360Ratings);
     } else {
-        constructPercentileCharts(self_data,third_data);
+        constructPercentileCharts(self_data,third_data,hasEnough360Ratings);
     }
 
 }
 
-function getStudentData(data,result,type) {
+function getStudentData(data,result,type,group) {
 
     if (type==='Absolute') {
         const self_data = [
@@ -95,36 +103,36 @@ function getStudentData(data,result,type) {
         const self_data = [
             {
                 "data": {
-                    "Network": percentRank(getArrayForPercentRank(data,'Network1'),data[result-1].Network1),
-                    "Team-building": percentRank(getArrayForPercentRank(data,'Team1'),data[result-1].Team1),
-                    "Exchange": percentRank(getArrayForPercentRank(data,'Exchange1'),data[result-1].Exchange1),
-                    "Allocentrism": percentRank(getArrayForPercentRank(data,'Allocentrism1'),data[result-1].Allocentrism1),
-                    "Situation Awareness": percentRank(getArrayForPercentRank(data,'SA1'),data[result-1].SA1),
-                    "Agency": percentRank(getArrayForPercentRank(data,'Agency1'),data[result-1].Agency1),
-                    "Intentionality": percentRank(getArrayForPercentRank(data,'Intentionality1'),data[result-1].Intentionality1),
-                    "Logos": percentRank(getArrayForPercentRank(data,'Logos1'),data[result-1].Logos1),
-                    "Might": percentRank(getArrayForPercentRank(data,'Might1'),data[result-1].Might1),
-                    "Ethos": percentRank(getArrayForPercentRank(data,'Ethos1'),data[result-1].Ethos1),
-                    "Coalition": percentRank(getArrayForPercentRank(data,'Coalition1'),data[result-1].Coalition1),
-                    "Pathos": percentRank(getArrayForPercentRank(data,'Pathos1'),data[result-1].Pathos1),
+                    "Network": percentRank(getArrayForPercentRank(data,group,'Network1'),data[result-1].Network1),
+                    "Team-building": percentRank(getArrayForPercentRank(data,group,'Team1'),data[result-1].Team1),
+                    "Exchange": percentRank(getArrayForPercentRank(data,group,'Exchange1'),data[result-1].Exchange1),
+                    "Allocentrism": percentRank(getArrayForPercentRank(data,group,'Allocentrism1'),data[result-1].Allocentrism1),
+                    "Situation Awareness": percentRank(getArrayForPercentRank(data,group,'SA1'),data[result-1].SA1),
+                    "Agency": percentRank(getArrayForPercentRank(data,group,'Agency1'),data[result-1].Agency1),
+                    "Intentionality": percentRank(getArrayForPercentRank(data,group,'Intentionality1'),data[result-1].Intentionality1),
+                    "Logos": percentRank(getArrayForPercentRank(data,group,'Logos1'),data[result-1].Logos1),
+                    "Might": percentRank(getArrayForPercentRank(data,group,'Might1'),data[result-1].Might1),
+                    "Ethos": percentRank(getArrayForPercentRank(data,group,'Ethos1'),data[result-1].Ethos1),
+                    "Coalition": percentRank(getArrayForPercentRank(data,group,'Coalition1'),data[result-1].Coalition1),
+                    "Pathos": percentRank(getArrayForPercentRank(data,group,'Pathos1'),data[result-1].Pathos1),
                 }
             }
         ];
         const third_data = [
             {
                 "data": {
-                    "Network": percentRank(getArrayForPercentRank(data,'Network3'),data[result-1].Network3),
-                    "Team-building": percentRank(getArrayForPercentRank(data,'Team3'),data[result-1].Team3),
-                    "Exchange": percentRank(getArrayForPercentRank(data,'Exchange3'),data[result-1].Exchange3),
-                    "Allocentrism": percentRank(getArrayForPercentRank(data,'Allocentrism3'),data[result-1].Allocentrism3),
-                    "Situation Awareness": percentRank(getArrayForPercentRank(data,'SA3'),data[result-1].SA3),
-                    "Agency": percentRank(getArrayForPercentRank(data,'Agency3'),data[result-1].Agency3),
-                    "Intentionality": percentRank(getArrayForPercentRank(data,'Intentionality3'),data[result-1].Intentionality3),
-                    "Logos": percentRank(getArrayForPercentRank(data,'Logos3'),data[result-1].Logos3),
-                    "Might": percentRank(getArrayForPercentRank(data,'Might3'),data[result-1].Might3),
-                    "Ethos": percentRank(getArrayForPercentRank(data,'Ethos3'),data[result-1].Ethos3),
-                    "Coalition": percentRank(getArrayForPercentRank(data,'Coalition3'),data[result-1].Coalition3),
-                    "Pathos": percentRank(getArrayForPercentRank(data,'Pathos3'),data[result-1].Pathos3),
+                    "Network": percentRank(getArrayForPercentRank(data,group,'Network3'),data[result-1].Network3),
+                    "Team-building": percentRank(getArrayForPercentRank(data,group,'Team3'),data[result-1].Team3),
+                    "Exchange": percentRank(getArrayForPercentRank(data,group,'Exchange3'),data[result-1].Exchange3),
+                    "Allocentrism": percentRank(getArrayForPercentRank(data,group,'Allocentrism3'),data[result-1].Allocentrism3),
+                    "Situation Awareness": percentRank(getArrayForPercentRank(data,group,'SA3'),data[result-1].SA3),
+                    "Agency": percentRank(getArrayForPercentRank(data,group,'Agency3'),data[result-1].Agency3),
+                    "Intentionality": percentRank(getArrayForPercentRank(data,group,'Intentionality3'),data[result-1].Intentionality3),
+                    "Logos": percentRank(getArrayForPercentRank(data,group,'Logos3'),data[result-1].Logos3),
+                    "Might": percentRank(getArrayForPercentRank(data,group,'Might3'),data[result-1].Might3),
+                    "Ethos": percentRank(getArrayForPercentRank(data,group,'Ethos3'),data[result-1].Ethos3),
+                    "Coalition": percentRank(getArrayForPercentRank(data,group,'Coalition3'),data[result-1].Coalition3),
+                    "Pathos": percentRank(getArrayForPercentRank(data,group,'Pathos3'),data[result-1].Pathos3),
                 }
             }
         ];
@@ -237,12 +245,6 @@ function radialBarChart() {
             .attr('xlink:href', '#label-path')
             .attr('startOffset', function(d, i) {return i * 100 / numBars + 50 / numBars + '%';})
             .text(function(d) {return capitalizeLabels ? d.toUpperCase() : d;});
-    }
-
-    // Computes the angle of an arc, converting from radians to degrees.
-    function angle(d) {
-        var a = (d.startAngle + d.endAngle) * 90 / Math.PI - 90;
-        return a > 90 ? a - 180 : a;
     }
 
     function chart(selection) {
@@ -401,13 +403,16 @@ function percentRank(array, n) {
     return pct
 }
 
-function getArrayForPercentRank(data,string){
+function getArrayForPercentRank(data,group,string){
     const array = [];
-    data.forEach((student) => array.push(+student[string]));
+    const filteredData = data.filter(student => student[group] == 1);
+
+    //filter data by the comparison group
+    filteredData.forEach((student) => array.push(+student[string]));
     return array;
 }
 
-function constructPercentileCharts(data1,data2) {
+function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
     console.log('constructing percentile');
     const chartStyling = radialBarChart()
         .barHeight(220)
@@ -418,6 +423,11 @@ function constructPercentileCharts(data1,data2) {
         .tickValues([0.25,0.50,0.75,1.0])
         .tickCircleValues([.25,.50,.75]);
 
+    document.querySelector("#chart1abs").classList.remove('hidden');
+    document.querySelector("#chart2abs").classList.remove('hidden');
+    document.querySelector("#chart1perc").classList.remove('hidden');
+    document.querySelector("#chart2perc").classList.remove('hidden');
+
     d3.select('#chart1perc')
         .datum(data1)
         .call(chartStyling);
@@ -425,9 +435,12 @@ function constructPercentileCharts(data1,data2) {
         .datum(data2)
         .call(chartStyling);
 
+    if (hasEnough360Ratings == 0) {
+        document.querySelectorAll('.third').forEach(elem => elem.style.display = 'none');
+    }
 }
 
-function constructCharts(data1,data2) {
+function constructCharts(data1,data2,hasEnough360Ratings) {
     console.log('constructing absolute');
     const chartStyling = radialBarChart()
         .barHeight(220)
@@ -438,10 +451,57 @@ function constructCharts(data1,data2) {
         .tickValues([1,2,3,4])
         .tickCircleValues([1,2,3]);
 
+    document.querySelector("#chart1perc").classList.add('hidden');
+    document.querySelector("#chart2perc").classList.add('hidden');
+    document.querySelector("#chart1perc").classList.remove('active');
+    document.querySelector("#chart2perc").classList.remove('active');
+    document.querySelector("#chart1abs").classList.remove('hidden');
+    document.querySelector("#chart2abs").classList.remove('hidden');
+    document.querySelector("#chart1abs").classList.add('active');
+    document.querySelector("#chart2abs").classList.add('active');
+
     d3.select('#chart1abs')
         .datum(data1)
         .call(chartStyling);
     d3.select('#chart2abs')
         .datum(data2)
         .call(chartStyling);
+
+    if (hasEnough360Ratings == 0) {
+        document.querySelectorAll('.third').forEach(elem => elem.style.display = 'none');
+    }
+}
+
+function checkCookie() {
+    let user = getCookie("userId");
+    if (user != "") {
+        alert("Welcome back!");
+    } else {
+        user = prompt("Please enter your user ID #:", "");
+        if (user != "" && user != null) {
+            setCookie("userId", user, 365);
+        }
+    }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    const name = cname + "=";
+    const ca = document.cookie.split(';');
+    for(i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }

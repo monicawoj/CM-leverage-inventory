@@ -10,130 +10,116 @@
   </head>
 
 <body>
-  <div class="header">
-    <h1>Leverage Inventory Results</h1>
-  </div>
-  <div class="description-holder">
-    <h2>How to Interpret Scores</h2>
-    <p>Each wedge shows your score for a particular influence strategy. The scale is frequency-of-use, in percentiles, relative to full-time Wharton MBAs in the 2016 classes (n=217). "3rd-party Ratings" are relative to other students' 3rd-party ratings (aka “Section IV. Benchmark Comparison” in your Leverage Inventory report) and “Self Ratings” are relative to other students’ self ratings (not reported in your Leverage Inventory report).</p>
-  </div>
+  <div class="page">
+    <div class="header">
+      <h1>My Leverage Inventory Results</h1>
 
-  <form class="selected-student" action="action_page.php">
-    <label>Student ID:</label>
-    <input type="number" name="studentIdInput"
-           min="1" max="218" step="any" value="1" id="studentIdInput">   <!-- form entry text - how to determine max?-->   <!-- note: #nValue is important in D3 below, when updating the circle to match Student ID's data-->
-    <div class="type-toggle">
-      <button class="absolute">Absolute</button>
-      <button class="percentile">Percentile</button>
     </div>
-    <div class="percentile-options hidden">
-      <fieldset>
-        <legend>Select a comparison group</legend>
-        <div class="options">
-          <div>vs.</div>
-          <div class="radio">
-            <input type="radio" id="AvgMBA" name="comparison-group" checked />
-            <label for="AvgMBA">Average Wharton MBA</label>
-          </div>
-          <div class="radio">
-            <input type="radio" id="group" name="comparison-group" />
-            <label for="group">Group</label>
-          </div>
+    <div class="header">
+      <h2 class="header-name"></h2>
+      <h2 class="header-date"></h2>
+    </div>
+    <div class="description-holder">
+      <h3>How to Interpret Scores</h3>
+      <p>Each wedge shows your score for a particular influence strategy. The scale is frequency-of-use, in percentiles, relative to full-time Wharton MBAs in the 2016 classes (n=217). "3rd-party Ratings" are relative to other students' 3rd-party ratings (aka “Section IV. Benchmark Comparison” in your Leverage Inventory report) and “Self Ratings” are relative to other students’ self ratings (not reported in your Leverage Inventory report).</p>
+    </div>
+
+    <div class="chart-holder">
+      <div class="color-legend">
+        <div>
+          <div class="legend-square hard"></div>
+          <p>Hard Power</p>
         </div>
-      </fieldset>
-    </div>
-  </form>
-
-  <div class="color-legend">
-    <div>
-      <div class="legend-square hard"></div>
-      <p>Hard Power</p>
-    </div>
-    <div class="soft">
-      <div class="legend-square soft"></div>
-      <p>Soft Power</p>
-    </div>
-    <div class="smart">
-      <div class="legend-square smart"></div>
-      <p>Smart Power</p>
-    </div>
-  </div>
-
-  <div class="chart-holder">
-    <div class="self">
-      <h2>Self-Assessment: Absolute Scores</h2>
-      <p>On a scale of 1-4</p>
-      <div class= "chart" id="chart1abs"></div>
+        <div class="soft">
+          <div class="legend-square soft"></div>
+          <p>Soft Power</p>
+        </div>
+        <div class="smart">
+          <div class="legend-square smart"></div>
+          <p>Smart Power</p>
+        </div>
+      </div>
+      <div class="self">
+        <h2>Self-Assessment: Absolute Scores</h2>
+        <p>On a scale of 1-4</p>
+        <div class= "chart" id="chart1abs"></div>
+        <p class="chart-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quam tellus, rutrum eget felis ut, placerat pretium arcu. Proin faucibus pretium condimentum. Donec nec lorem ut felis pulvinar rhoncus. Aenean eget pellentesque dolor. Donec eleifend velit vel erat gravida bibendum. Praesent lacinia ligula id nisl tincidunt commodo. Ut finibus eleifend massa vel aliquet. Maecenas eget enim eget nibh elementum rutrum at quis purus. Duis congue nulla eu nisi convallis posuere. Aliquam tortor nulla, congue et ligula id, venenatis lobortis nisl. Proin pulvinar elit quam, id scelerisque quam tincidunt id. Cras vehicula pellentesque auctor. Curabitur tortor justo, condimentum quis magna ornare, sagittis finibus tellus. Aliquam eros lorem, finibus non hendrerit at, imperdiet vitae sem.</p>
+      </div>
     </div>
   </div>
 
-  <div class="color-legend">
-    <div>
-      <div class="legend-square hard"></div>
-      <p>Hard Power</p>
-    </div>
-    <div class="soft">
-      <div class="legend-square soft"></div>
-      <p>Soft Power</p>
-    </div>
-    <div class="smart">
-      <div class="legend-square smart"></div>
-      <p>Smart Power</p>
-    </div>
-  </div>
-
-  <div class="chart-holder">
-    <div class="self">
-      <h2>Self-Assessment: Percentile Scores</h2>
-      <p>vs. **GROUP NAME**</p>
-      <div class= "chart" id="chart1perc"></div>
-      <p>Testing this</p>
-    </div>
-  </div>
-
-  <div class="color-legend">
-    <div>
-      <div class="legend-square hard"></div>
-      <p>Hard Power</p>
-    </div>
-    <div class="soft">
-      <div class="legend-square soft"></div>
-      <p>Soft Power</p>
-    </div>
-    <div class="smart">
-      <div class="legend-square smart"></div>
-      <p>Smart Power</p>
+  <div class="page">
+    <div class="chart-holder">
+      <div class="color-legend">
+        <div>
+          <div class="legend-square hard"></div>
+          <p>Hard Power</p>
+        </div>
+        <div class="soft">
+          <div class="legend-square soft"></div>
+          <p>Soft Power</p>
+        </div>
+        <div class="smart">
+          <div class="legend-square smart"></div>
+          <p>Smart Power</p>
+        </div>
+      </div>
+      <div class="self">
+        <h2>Self-Assessment: Percentile Scores</h2>
+        <p>vs. **GROUP NAME**</p>
+        <div class= "chart" id="chart1perc"></div>
+        <p class="chart-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quam tellus, rutrum eget felis ut, placerat pretium arcu. Proin faucibus pretium condimentum. Donec nec lorem ut felis pulvinar rhoncus. Aenean eget pellentesque dolor. Donec eleifend velit vel erat gravida bibendum. Praesent lacinia ligula id nisl tincidunt commodo. Ut finibus eleifend massa vel aliquet. Maecenas eget enim eget nibh elementum rutrum at quis purus. Duis congue nulla eu nisi convallis posuere. Aliquam tortor nulla, congue et ligula id, venenatis lobortis nisl. Proin pulvinar elit quam, id scelerisque quam tincidunt id. Cras vehicula pellentesque auctor. Curabitur tortor justo, condimentum quis magna ornare, sagittis finibus tellus. Aliquam eros lorem, finibus non hendrerit at, imperdiet vitae sem.</p>
+      </div>
     </div>
   </div>
 
-  <div class="chart-holder">
-  <div class="self">
-    <h2>3rd Party Assessment: Absolute Scores</h2>
-    <p>On a scale of 1-4</p>
-    <div class= "chart" id="chart2abs"></div>
-  </div>
+  <div class="page third">
+    <div class="chart-holder">
+      <div class="color-legend">
+        <div>
+          <div class="legend-square hard"></div>
+          <p>Hard Power</p>
+        </div>
+        <div class="soft">
+          <div class="legend-square soft"></div>
+          <p>Soft Power</p>
+        </div>
+        <div class="smart">
+          <div class="legend-square smart"></div>
+          <p>Smart Power</p>
+        </div>
+      </div>
+      <div class="third">
+        <h2>3rd Party Assessment: Absolute Scores</h2>
+        <p>On a scale of 1-4</p>
+        <div class= "chart" id="chart2abs"></div>
+        <p class="chart-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quam tellus, rutrum eget felis ut, placerat pretium arcu. Proin faucibus pretium condimentum. Donec nec lorem ut felis pulvinar rhoncus. Aenean eget pellentesque dolor. Donec eleifend velit vel erat gravida bibendum. Praesent lacinia ligula id nisl tincidunt commodo. Ut finibus eleifend massa vel aliquet. Maecenas eget enim eget nibh elementum rutrum at quis purus. Duis congue nulla eu nisi convallis posuere. Aliquam tortor nulla, congue et ligula id, venenatis lobortis nisl. Proin pulvinar elit quam, id scelerisque quam tincidunt id. Cras vehicula pellentesque auctor. Curabitur tortor justo, condimentum quis magna ornare, sagittis finibus tellus. Aliquam eros lorem, finibus non hendrerit at, imperdiet vitae sem.</p>
+      </div>
+    </div>
   </div>
 
-  <div class="color-legend">
-    <div>
-      <div class="legend-square hard"></div>
-      <p>Hard Power</p>
-    </div>
-    <div class="soft">
-      <div class="legend-square soft"></div>
-      <p>Soft Power</p>
-    </div>
-    <div class="smart">
-      <div class="legend-square smart"></div>
-      <p>Smart Power</p>
-    </div>
-  </div>
-
-  <div class="chart-holder">
-    <div class="self">
-      <h2>3rd Party Assessment: Percentile Scores</h2>
-      <p>vs. **GROUP NAME**</p>
-      <div class= "chart" id="chart2perc"></div>
+  <div class="page third">
+    <div class="chart-holder">
+      <div class="color-legend">
+        <div>
+          <div class="legend-square hard"></div>
+          <p>Hard Power</p>
+        </div>
+        <div class="soft">
+          <div class="legend-square soft"></div>
+          <p>Soft Power</p>
+        </div>
+        <div class="smart">
+          <div class="legend-square smart"></div>
+          <p>Smart Power</p>
+        </div>
+      </div>
+      <div class="third">
+        <h2>3rd Party Assessment: Percentile Scores</h2>
+        <p>vs. **GROUP NAME**</p>
+        <div class= "chart" id="chart2perc"></div>
+        <p class="chart-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quam tellus, rutrum eget felis ut, placerat pretium arcu. Proin faucibus pretium condimentum. Donec nec lorem ut felis pulvinar rhoncus. Aenean eget pellentesque dolor. Donec eleifend velit vel erat gravida bibendum. Praesent lacinia ligula id nisl tincidunt commodo. Ut finibus eleifend massa vel aliquet. Maecenas eget enim eget nibh elementum rutrum at quis purus. Duis congue nulla eu nisi convallis posuere. Aliquam tortor nulla, congue et ligula id, venenatis lobortis nisl. Proin pulvinar elit quam, id scelerisque quam tincidunt id. Cras vehicula pellentesque auctor. Curabitur tortor justo, condimentum quis magna ornare, sagittis finibus tellus. Aliquam eros lorem, finibus non hendrerit at, imperdiet vitae sem.</p>
+      </div>
     </div>
   </div>
 

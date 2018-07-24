@@ -1,20 +1,56 @@
 const levdata = "levdatasample.csv";
+const tempAjaxReturnData = [
+    {
+        "first_name": "Monica",
+        "last_name": "Wojciechowski",
+        "Student_ID": 1,
+        "Ethos1": 2,
+        "Logos1": 3,
+        "Pathos1": 2,
+        "Allocentrism1": 2,
+        "Exchange1": 3,
+        "Might1": 2,
+        "Network1": 3,
+        "Coalition1": 4,
+        "Team1": 3,
+        "Intentionality1": 4,
+        "SA1": 1,
+        "Agency1": 4,
+        "Ethos3": 1,
+        "Logos3": 2,
+        "Pathos3": 3,
+        "Allocentrism3": 2,
+        "Exchange3": 2,
+        "Might3": 3,
+        "Network3": 2,
+        "Coalition3": 1,
+        "Team3": 4,
+        "Intentionality3": 3,
+        "SA3": 4,
+        "Agency3": 1,
+        "group1": 1,
+        "group2": 0,
+        "hasEnough360Ratings": 1,
+        "": ""
+    }
+];
+checkCookie();
 
 d3.csv(levdata, function(data) {
 
-    //initialize charts with student id = 1
     let type='Absolute';
-    let studentId = 1;
+    //let userId = 1;
     let group = 'group1';
-    let hasEnough360Ratings = 1;
-    let hasThirdAndSelf = 1;
-    const chartData = getStudentData(data,studentId,type,group);
+    let userId = getCookie('userId');
+    //let hasThirdAndSelf = 1; should not be necessary, as the above flag will be false if no 3rd party data at all
+    const hasEnough360Ratings = data[userId-1].hasEnough360Ratings;
+    const chartData = getStudentData(data,userId,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
     if (type==='Absolute') {
-        constructCharts(self_data,third_data);
+        constructCharts(self_data,third_data,hasEnough360Ratings);
     } else {
-        constructPercentileCharts(self_data,third_data);
+        constructPercentileCharts(self_data,third_data,hasEnough360Ratings);
     }
 
     //update charts when absolute/percentile toggle changes
@@ -25,7 +61,7 @@ d3.csv(levdata, function(data) {
                 button.classList.remove('button-clicked');
             });
             this.classList.add('button-clicked');
-            update(data,document.querySelector("#studentIdInput").value,this.innerText,getValue("comparison-group"));
+            update(data,userId,this.innerText,getValue("comparison-group"));
             if (this.innerText === 'Percentile') {
                 type='Percentile';
                 document.querySelector(".percentile-options").classList.remove('hidden');
@@ -41,14 +77,14 @@ d3.csv(levdata, function(data) {
     document.getElementsByName("comparison-group").forEach(element => {
         element.addEventListener("click", function(event) {
             group = this.value;
-            update(data,document.querySelector("#studentIdInput").value,"Percentile",getValue("comparison-group"));
+            update(data,userId,"Percentile",getValue("comparison-group"));
         });
     });
 
-    //update charts when studentId changes
-    d3.select("#studentIdInput").on("input", function() {
-        update(data,+this.value,type,getValue("comparison-group"));
-    });
+    //update charts when userId changes
+    // d3.select("#userIdInput").on("input", function() {
+    //     update(data,+this.value,type,getValue("comparison-group"));
+    // });
 
 });
 
@@ -62,10 +98,10 @@ function getValue(group) {
     return result;
 }
 
-function update(data,studentId,type,group) {
-    d3.select("#studentIdInput").text(studentId);
-    d3.select("#studentIdInput").property("value", studentId);
-    const chartData = getStudentData(data,studentId,type,group);
+function update(data,userId,type,group) {
+    d3.select("#userIdInput").text(userId);
+    d3.select("#userIdInput").property("value", userId);
+    const chartData = getStudentData(data,userId,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
     if (type==='Absolute') {
@@ -430,7 +466,7 @@ function getArrayForPercentRank(data,group,string){
     return array;
 }
 
-function constructPercentileCharts(data1,data2) {
+function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
     console.log('constructing percentile');
     const chartStyling = radialBarChart()
         .barHeight(220)
@@ -457,9 +493,12 @@ function constructPercentileCharts(data1,data2) {
         .datum(data2)
         .call(chartStyling);
 
+    if (hasEnough360Ratings == 0) {
+        document.querySelectorAll('.third').forEach(elem => elem.style.display = 'none');
+    }
 }
 
-function constructCharts(data1,data2) {
+function constructCharts(data1,data2,hasEnough360Ratings) {
     console.log('constructing absolute');
     const chartStyling = radialBarChart()
         .barHeight(220)
@@ -485,4 +524,42 @@ function constructCharts(data1,data2) {
     d3.select('#chart2abs')
         .datum(data2)
         .call(chartStyling);
+
+    if (hasEnough360Ratings == 0) {
+        document.querySelectorAll('.third').forEach(elem => elem.style.display = 'none');
+    }
+}
+
+function checkCookie() {
+    let user = getCookie("userId");
+    if (user != "") {
+        alert("Welcome back user: " + user);
+    } else {
+        user = prompt("Please enter your user ID #:", "");
+        if (user != "" && user != null) {
+            setCookie("userId", user, 365);
+        }
+    }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    const name = cname + "=";
+    const ca = document.cookie.split(';');
+    for(i = 0; i < ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }

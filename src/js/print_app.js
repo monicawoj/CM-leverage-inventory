@@ -53,6 +53,7 @@ d3.json(`http://localhost:3000/user${userId}`, function(data) {
     document.querySelector('.header-name').innerHTML = name;
     document.querySelector('.header-date').innerHTML = today;
 
+    window.focus();
     window.print();
 
 });

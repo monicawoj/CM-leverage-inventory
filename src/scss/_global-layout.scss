@@ -61,8 +61,23 @@ body {
   margin: 0;
 }
 
+.chart-info {
+  width: 100%;
+  //height: 23px;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+.chart-title {
+  justify-self: center;
+  text-align: center;
+  width: 33%;
+}
+
 .color-legend {
-  width: 120px;
+  width: 33%;
   height: 100px;
   display: flex;
   align-items: flex-start;
@@ -73,6 +88,12 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    margin-left: 20%;
+    width: 100%;
+    p {
+      font-weight: normal;
+      font-size: 16px;
+    }
     .legend-square {
       width: 20px;
       height: 20px;
@@ -88,6 +109,7 @@ body {
       }
     }
   }
+
 }
 
 .legend {
@@ -157,7 +179,7 @@ footer {
     @media print {
       width: 100%;
     }
-    p {
+    p.chart-title {
       font-size: 20px;
       text-align: center;
       font-weight: bold;
@@ -168,13 +190,58 @@ footer {
       }
     }
   }
-  .third {
-    margin-top: 50px;
+  .self {
+    .chart-info {
+      .chart-title {
+        width: 33%;
+      }
+      .color-legend {
+        display: flex;
+      }
+    }
     @media screen and (min-width: $break) {
       margin-top: 0;
+      .chart-info {
+        .chart-title {
+          width: 100%;
+        }
+        .color-legend {
+          display: none;
+        }
+      }
+    }
+  }
+  .third {
+    margin-top: 50px;
+    .chart-info {
+      .chart-title {
+        width: 100%;
+      }
+      .color-legend {
+        display: none;
+      }
+    }
+    @media screen and (min-width: $break) {
+      margin-top: 0;
+      .chart-info {
+        .chart-title {
+          width: 33%;
+        }
+        .color-legend {
+          display: flex;
+        }
+      }
     }
     @media print {
       margin-top: 0;
+      .chart-info {
+        .chart-title {
+          width: 33%;
+        }
+        .color-legend {
+          display: flex;
+        }
+      }
     }
   }
   p.chart-description {

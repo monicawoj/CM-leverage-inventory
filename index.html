@@ -12,28 +12,10 @@
 <body>
   <div class="header">
     <h1>Leverage Inventory Results</h1>
-    <a id='print-button' href="javascript: w=window.open('./print_results.html'); w.print();">Print Results</a>
-  </div>
-
-  <div class="color-legend">
-    <div>
-      <div class="legend-square hard"></div>
-      <p>Hard Power</p>
-    </div>
-    <div class="soft">
-      <div class="legend-square soft"></div>
-      <p>Soft Power</p>
-    </div>
-    <div class="smart">
-      <div class="legend-square smart"></div>
-      <p>Smart Power</p>
-    </div>
+    <a id='print-button' href="javascript: w=window.open('./print_results.html')">Print Results</a>
   </div>
 
   <form class="selected-student" action="action_page.php">
-    <!--<label>Student ID:</label>-->
-    <!--<input type="number" name="userIdInput"-->
-     <!--min="1" max="218" step="any" value="1" id="userIdInput">-->
     <div class="type-toggle">
       <button class="absolute">Absolute</button>
       <button class="percentile">Percentile</button>
@@ -43,14 +25,6 @@
         <legend>Select a comparison group</legend>
         <div class="options">
           <div>vs.</div>
-          <div class="radio">
-            <input type="radio" id="group1" name="comparison-group" checked />
-            <label for="group1">Group1</label>
-          </div>
-          <div class="radio">
-            <input type="radio" id="group2" name="comparison-group" />
-            <label for="group2">Group2</label>
-          </div>
         </div>
       </fieldset>
     </div>
@@ -58,12 +32,44 @@
 
   <div class="chart-holder">
     <div class="self">
-      <p>Self-Assessment</p>
+      <div class="chart-info">
+        <p class="chart-title">Self-Assessment</p>
+        <div class="color-legend">
+          <div class="hard">
+            <div class="legend-square hard"></div>
+            <p>Hard Power</p>
+          </div>
+          <div class="soft">
+            <div class="legend-square soft"></div>
+            <p>Soft Power</p>
+          </div>
+          <div class="smart">
+            <div class="legend-square smart"></div>
+            <p>Smart Power</p>
+          </div>
+        </div>
+      </div>
       <div class= "chart" id="chart1abs"></div>
       <div class= "chart hidden" id="chart1perc"></div>
     </div>
     <div class="third">
-      <p>3rd Party Assessment</p>
+      <div class="chart-info">
+        <p class="chart-title">3rd Party Assessment</p>
+        <div class="color-legend">
+          <div class="hard">
+            <div class="legend-square hard"></div>
+            <p>Hard Power</p>
+          </div>
+          <div class="soft">
+            <div class="legend-square soft"></div>
+            <p>Soft Power</p>
+          </div>
+          <div class="smart">
+            <div class="legend-square smart"></div>
+            <p>Smart Power</p>
+          </div>
+        </div>
+      </div>
       <div class= "chart" id="chart2abs"></div>
       <div class= "chart hidden" id="chart2perc"></div>
     </div>

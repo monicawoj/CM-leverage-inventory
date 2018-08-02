@@ -1,0 +1,33 @@
+[
+    {
+        "first_name": "Beaufort",
+        "last_name": "Karlqvist",
+        "Student_ID": 2,
+        "Ethos1": 3,
+        "Logos1": 4,
+        "Pathos1": 3,
+        "Allocentrism1": 1,
+        "Exchange1": 2,
+        "Might1": 4,
+        "Network1": 2,
+        "Coalition1": 3,
+        "Team1": 4,
+        "Intentionality1": 2,
+        "SA1": 3,
+        "Agency1": 2,
+        "Ethos3": 3,
+        "Logos3": 3,
+        "Pathos3": 4,
+        "Allocentrism3": 3,
+        "Exchange3": 1,
+        "Might3": 2,
+        "Network3": 4,
+        "Coalition3": 2,
+        "Team3": 3,
+        "Intentionality3": 4,
+        "SA3": 2,
+        "Agency3": 3,
+        "groups": ["group1"],
+        "hasEnough360Ratings": 0
+    }
+]

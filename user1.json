@@ -1,0 +1,33 @@
+[
+    {
+        "first_name": "Monica",
+        "last_name": "Wojciechowski",
+        "userId": 1,
+        "Ethos1": 2,
+        "Logos1": 3,
+        "Pathos1": 2,
+        "Allocentrism1": 2,
+        "Exchange1": 3,
+        "Might1": 2,
+        "Network1": 3,
+        "Coalition1": 4,
+        "Team1": 3,
+        "Intentionality1": 4,
+        "SA1": 1,
+        "Agency1": 4,
+        "Ethos3": 1,
+        "Logos3": 2,
+        "Pathos3": 3,
+        "Allocentrism3": 2,
+        "Exchange3": 2,
+        "Might3": 3,
+        "Network3": 2,
+        "Coalition3": 1,
+        "Team3": 4,
+        "Intentionality3": 3,
+        "SA3": 4,
+        "Agency3": 1,
+        "groups": ["group1","group2","group3"],
+        "hasEnough360Ratings": 1
+    }
+]

@@ -1,6 +1,7 @@
 //start by getting the unique userId from cookie, or ask for user to provide it
 checkCookie();
 const userId = getCookie('userId');
+//D3 API Reference: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
 
 d3.json(`http://localhost:3000/user${userId}`, function(data) {
 
@@ -193,7 +194,7 @@ function radialBarChart() {
 
 
     function init(d) {
-        barScale = d3.scale.linear().domain(domain).range([0, barHeight]);
+        barScale = d3.scale.sqrt().domain(domain).range([0, barHeight]);
 
         keys = d3.map(d[0].data).keys();
         numBars = keys.length;
@@ -244,7 +245,7 @@ function radialBarChart() {
             .attr('transform', function(d, i) {return svgRotate(i * 360 / numBars);});
 
         // Axis
-        var axisScale = d3.scale.linear().domain(domain).range([0, -barHeight]);
+        var axisScale = d3.scale.sqrt().domain(domain).range([0, -barHeight]);
         var axis = d3.svg.axis().scale(axisScale).orient('right');
         if(tickValues)
             axis.tickValues(tickValues);
@@ -454,8 +455,8 @@ function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
         .capitalizeLabels(true)
         .barColors([ '#9999ff', '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff' /* Pathos */,])  /* can define bar colors b/c fixed location of tactics around circle */
         .domain([0,1])
-        .tickValues([0.25,0.50,0.75,1.0])
-        .tickCircleValues([.25,.50,.75]);
+        .tickValues([0.2,0.4,0.6,0.8,1.0])
+        .tickCircleValues([.2,.4,.6,.8]);
 
     document.querySelector("#chart1abs").classList.add('hidden');
     document.querySelector("#chart2abs").classList.add('hidden');
@@ -479,7 +480,6 @@ function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
 }
 
 function constructCharts(data1,data2,hasEnough360Ratings) {
-    console.log('constructing absolute');
     const chartStyling = radialBarChart()
         .barHeight(220)
         .reverseLayerOrder(true)

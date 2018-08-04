@@ -34,6 +34,78 @@ d3.json(`http://localhost:3000/user${userId}`, function(data) {
     constructCharts(self_data,third_data,hasEnough360Ratings);
     update(data,userId,'Percentile',group,hasEnough360Ratings);
 
+    //display open-ended question responses if has meets threshold 360 responses
+    if (hasEnough360Ratings) {
+        const freeResponseQuestions = [
+            "Ut a non magna, eget vestibulum ultrices interdum.",
+            "Metus nibh laoreet wisi eu, corporis vehicula aliquam ut eu, mollis et aut mi turpis, lacinia nulla proin tortor ligula.",
+            "Iaculis mauris nec consectetuer, torquent mauris inceptos lacinia purus, aenean mauris lacus mattis vestibulum.",
+            "Donec vestibulum interdum nibh quis, et viverra nonummy in, nec malesuada amet ligula.",
+            "Ut nihil a et sed, metus mattis tristique a pharetra, integer viverra semper eget nec, aenean mi ac non."
+        ];
+
+        freeResponseQuestions.forEach((question,i) => {
+            let list = document.createElement('ul');
+            list.innerText = question;
+            list.classList.add(`open-ended-q${i+1}`);
+
+            d3.selectAll('.open-ended-response-container').append(() => {
+                return list;
+            });
+        });
+
+        let questionResponses = data[0][`openEndedQ1`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q1`).append(() => {
+                return listItem;
+            });
+        });
+
+        questionResponses = data[0][`openEndedQ2`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q2`).append(() => {
+                return listItem;
+            });
+        });
+
+        questionResponses = data[0][`openEndedQ3`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q3`).append(() => {
+                return listItem;
+            });
+        });
+
+        questionResponses = data[0][`openEndedQ4`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q4`).append(() => {
+                return listItem;
+            });
+        });
+
+        questionResponses = data[0][`openEndedQ5`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q5`).append(() => {
+                return listItem;
+            });
+        });
+
+    }
+
     //header with custom name and today's date
     const name = `<span class="purple">Name:</span> ${data[0].first_name} ${data[0].last_name}`;
     const date = new Date();

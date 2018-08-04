@@ -1,6 +1,13 @@
 //start by getting the unique userId from cookie, or ask for user to provide it
 checkCookie();
 const userId = getCookie('userId');
+const freeResponseQuestions = [
+    "Ut a non magna, eget vestibulum ultrices interdum.",
+    "Metus nibh laoreet wisi eu, corporis vehicula aliquam ut eu, mollis et aut mi turpis, lacinia nulla proin tortor ligula.",
+    "Iaculis mauris nec consectetuer, torquent mauris inceptos lacinia purus, aenean mauris lacus mattis vestibulum.",
+    "Donec vestibulum interdum nibh quis, et viverra nonummy in, nec malesuada amet ligula.",
+    "Ut nihil a et sed, metus mattis tristique a pharetra, integer viverra semper eget nec, aenean mi ac non."
+];
 //D3 API Reference: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
 
 d3.json(`http://localhost:3000/user${userId}`, function(data) {
@@ -37,6 +44,78 @@ d3.json(`http://localhost:3000/user${userId}`, function(data) {
         constructCharts(self_data,third_data,hasEnough360Ratings);
     } else {
         constructPercentileCharts(self_data,third_data,hasEnough360Ratings);
+    }
+
+    //display open-ended question responses if has meets threshold 360 responses
+    if (hasEnough360Ratings) {
+        const freeResponseQuestions = [
+            "Ut a non magna, eget vestibulum ultrices interdum.",
+            "Metus nibh laoreet wisi eu, corporis vehicula aliquam ut eu, mollis et aut mi turpis, lacinia nulla proin tortor ligula.",
+            "Iaculis mauris nec consectetuer, torquent mauris inceptos lacinia purus, aenean mauris lacus mattis vestibulum.",
+            "Donec vestibulum interdum nibh quis, et viverra nonummy in, nec malesuada amet ligula.",
+            "Ut nihil a et sed, metus mattis tristique a pharetra, integer viverra semper eget nec, aenean mi ac non."
+        ];
+
+        freeResponseQuestions.forEach((question,i) => {
+            let list = document.createElement('ul');
+            list.innerText = question;
+            list.classList.add(`open-ended-q${i+1}`);
+
+            d3.selectAll('.open-ended-response-container').append(() => {
+                return list;
+            });
+        });
+
+        let questionResponses = data[0][`openEndedQ1`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q1`).append(() => {
+                return listItem;
+            });
+        });
+
+        questionResponses = data[0][`openEndedQ2`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q2`).append(() => {
+                return listItem;
+            });
+        });
+
+        questionResponses = data[0][`openEndedQ3`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q3`).append(() => {
+                return listItem;
+            });
+        });
+
+        questionResponses = data[0][`openEndedQ4`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q4`).append(() => {
+                return listItem;
+            });
+        });
+
+        questionResponses = data[0][`openEndedQ5`];
+        questionResponses.forEach((response,j) => {
+            let listItem = document.createElement('li');
+            listItem.innerText = response;
+            listItem.classList.add(`open-ended-response`);
+            d3.selectAll(`.open-ended-q5`).append(() => {
+                return listItem;
+            });
+        });
+
     }
 
     //update charts when absolute/percentile toggle changes
@@ -98,36 +177,36 @@ function getStudentData(data,result,type,group) {
         const self_data = [
             {
                 "data": {
-                    "Network": data[0].Network1,
-                    "Team-building": data[0].Team1,
-                    "Exchange": data[0].Exchange1,
-                    "Allocentrism": data[0].Allocentrism1,
-                    "Sit. Awareness": data[0].SA1,
-                    "Agency": data[0].Agency1,
-                    "Intentionality": data[0].Intentionality1,
-                    "Logos": data[0].Logos1,
-                    "Might": data[0].Might1,
-                    "Ethos": data[0].Ethos1,
-                    "Coalition": data[0].Coalition1,
-                    "Pathos": data[0].Pathos1,
+                    "Network": data[0].Network1-1,
+                    "Team-building": data[0].Team1-1,
+                    "Exchange": data[0].Exchange1-1,
+                    "Allocentrism": data[0].Allocentrism1-1,
+                    "Sit. Awareness": data[0].SA1-1,
+                    "Agency": data[0].Agency1-1,
+                    "Intentionality": data[0].Intentionality1-1,
+                    "Logos": data[0].Logos1-1,
+                    "Might": data[0].Might1-1,
+                    "Ethos": data[0].Ethos1-1,
+                    "Coalition": data[0].Coalition1-1,
+                    "Pathos": data[0].Pathos1-1,
                 }
             }
         ];
         const third_data = [
             {
                 "data": {
-                    "Network": data[0].Network3,
-                    "Team-building": data[0].Team3,
-                    "Exchange": data[0].Exchange3,
-                    "Allocentrism": data[0].Allocentrism3,
-                    "Sit. Awareness": data[0].SA3,
-                    "Agency": data[0].Agency3,
-                    "Intentionality": data[0].Intentionality3,
-                    "Logos": data[0].Logos3,
-                    "Might": data[0].Might3,
-                    "Ethos": data[0].Ethos3,
-                    "Coalition": data[0].Coalition3,
-                    "Pathos": data[0].Pathos3,
+                    "Network": data[0].Network3-1,
+                    "Team-building": data[0].Team3-1,
+                    "Exchange": data[0].Exchange3-1,
+                    "Allocentrism": data[0].Allocentrism3-1,
+                    "Sit. Awareness": data[0].SA3-1,
+                    "Agency": data[0].Agency3-1,
+                    "Intentionality": data[0].Intentionality3-1,
+                    "Logos": data[0].Logos3-1,
+                    "Might": data[0].Might3-1,
+                    "Ethos": data[0].Ethos3-1,
+                    "Coalition": data[0].Coalition3-1,
+                    "Pathos": data[0].Pathos3-1,
                 }
             }
         ];
@@ -180,8 +259,9 @@ function radialBarChart() {
     var reverseLayerOrder = false;
     var barColors = undefined;
     var capitalizeLabels = false;
-    var domain = [0, 100];
+    var domain = undefined;
     var tickValues = undefined;
+    var tickFormat = undefined;
     var colorLabels = false;
     var tickCircleValues = [];
     var transitionDuration = 1000;
@@ -192,9 +272,30 @@ function radialBarChart() {
     var keys = null;
     var labelRadius = 0;
 
-
     function init(d) {
         barScale = d3.scale.sqrt().domain(domain).range([0, barHeight]);
+
+        // if (domain[1] > 5) {
+        //     for (i=0; i<=domain[1]; i+=10) {
+        //         if (i==domain[0]) {
+        //             console.log("Percentile");
+        //         }
+        //         console.log("Domain: " + i + ", Range: " + barScale(i));
+        //     }
+        // } else {
+        //     for (i=1; i<=domain[1]; i++) {
+        //         if (i==domain[0]) {
+        //             console.log("Absolute");
+        //         }
+        //         console.log("Domain: " + i + ", Range: " + barScale(i));
+        //     }
+        // }
+        // let customRange = [];
+        // for (i=domain[0]; i<=domain[1]; i++) {
+        //     let value = 220*(Math.sqrt(i)/Math.sqrt(domain[1]));
+        //     customRange.push(value);
+        // }
+        // console.log(customRange);
 
         keys = d3.map(d[0].data).keys();
         numBars = keys.length;
@@ -246,9 +347,14 @@ function radialBarChart() {
 
         // Axis
         var axisScale = d3.scale.sqrt().domain(domain).range([0, -barHeight]);
+
         var axis = d3.svg.axis().scale(axisScale).orient('right');
-        if(tickValues)
+        if(tickValues && tickFormat) {
+            axis.tickValues(tickValues).tickFormat(tickFormat);
+        } else if (tickValues) {
             axis.tickValues(tickValues);
+        }
+
         g.append('g')
             .classed('axis', true)
             .call(axis);
@@ -395,6 +501,12 @@ function radialBarChart() {
         return chart;
     };
 
+    chart.tickFormat = function(_) {
+        if (!arguments.length) return tickFormat;
+        tickFormat = _;
+        return chart;
+    };
+
     chart.colorLabels = function(_) {
         if (!arguments.length) return colorLabels;
         colorLabels = _;
@@ -440,7 +552,6 @@ function getArrayForPercentRank(data,group,string){
     const array = [];
     //const filteredData = data.filter(student => student[group] == 1);
     const filteredData = data.filter(user => user.groups.indexOf(group) >= 0);
-    console.log(filteredData);
 
     //filter data by the comparison group
     filteredData.forEach((student) => array.push(+student[string]));
@@ -448,15 +559,16 @@ function getArrayForPercentRank(data,group,string){
 }
 
 function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
-    console.log('constructing percentile');
+    const tickLabels = [.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0];
     const chartStyling = radialBarChart()
         .barHeight(220)
         .reverseLayerOrder(true)
         .capitalizeLabels(true)
         .barColors([ '#9999ff', '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff' /* Pathos */,])  /* can define bar colors b/c fixed location of tactics around circle */
         .domain([0,1])
-        .tickValues([0.2,0.4,0.6,0.8,1.0])
-        .tickCircleValues([.2,.4,.6,.8]);
+        .tickValues([.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0])
+        .tickFormat(function(d,i){ return tickLabels[i] })
+        .tickCircleValues([.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0]);
 
     document.querySelector("#chart1abs").classList.add('hidden');
     document.querySelector("#chart2abs").classList.add('hidden');
@@ -480,14 +592,16 @@ function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
 }
 
 function constructCharts(data1,data2,hasEnough360Ratings) {
+    const tickLabels = [1,2,3,4];
     const chartStyling = radialBarChart()
         .barHeight(220)
         .reverseLayerOrder(true)
         .capitalizeLabels(true)
         .barColors([ '#9999ff', '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff' /* Pathos */,])  /* can define bar colors b/c fixed location of tactics around circle */
-        .domain([1,4])
-        .tickValues([1,2,3,4])
-        .tickCircleValues([1,2,3]);
+        .domain([0,3])
+        .tickValues([0,1,2,3])
+        .tickFormat(function(d,i){ return tickLabels[i] })
+        .tickCircleValues([2,3,4]);
 
     document.querySelector("#chart1perc").classList.add('hidden');
     document.querySelector("#chart2perc").classList.add('hidden');

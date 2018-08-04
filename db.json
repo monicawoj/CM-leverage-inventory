@@ -29,7 +29,32 @@
             "SA3": 4,
             "Agency3": 1,
             "groups": ["group1","group2","group3"],
-            "hasEnough360Ratings": 1
+            "hasEnough360Ratings": 1,
+            "openEndedQ1": [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Fusce in mi lobortis, vestibulum massa eget, mattis dolor.",
+                "Quisque id ligula sed magna vehicula gravida sed eget eros.",
+                "Nam lacinia dolor sit amet ex consectetur ullamcorper sit amet in orci."
+            ],
+            "openEndedQ2": [
+                "Morbi ac urna ut arcu auctor volutpat.",
+                "Curabitur lacinia orci a nibh egestas euismod."
+            ],
+            "openEndedQ3": [
+                "Duis vel mauris nec augue ornare aliquet.",
+                "Suspendisse lacinia quam eget ligula pellentesque mattis.",
+                "Maecenas non felis sagittis, varius nunc in, feugiat nunc."
+            ],
+            "openEndedQ4": [
+                "Nullam condimentum libero eu pretium iaculis.",
+                "Aenean non ante quis justo rhoncus vehicula eget ut diam."
+            ],
+            "openEndedQ5": [
+                "Sed nec massa sit amet tortor volutpat luctus eu at mauris.",
+                "Morbi varius felis in mauris iaculis, at commodo neque semper.",
+                "Phasellus et urna gravida, ullamcorper neque nec, finibus lectus.",
+                "Nunc sed velit eget metus egestas ultrices."
+            ]
         }
     ],
     "user2": [
@@ -62,7 +87,32 @@
             "SA3": 2,
             "Agency3": 3,
             "groups": ["group1"],
-            "hasEnough360Ratings": 0
+            "hasEnough360Ratings": 0,
+            "openEndedQ1": [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Fusce in mi lobortis, vestibulum massa eget, mattis dolor.",
+                "Quisque id ligula sed magna vehicula gravida sed eget eros.",
+                "Nam lacinia dolor sit amet ex consectetur ullamcorper sit amet in orci."
+            ],
+            "openEndedQ2": [
+                "Morbi ac urna ut arcu auctor volutpat.",
+                "Curabitur lacinia orci a nibh egestas euismod."
+            ],
+            "openEndedQ3": [
+                "Duis vel mauris nec augue ornare aliquet.",
+                "Suspendisse lacinia quam eget ligula pellentesque mattis.",
+                "Maecenas non felis sagittis, varius nunc in, feugiat nunc."
+            ],
+            "openEndedQ4": [
+                "Nullam condimentum libero eu pretium iaculis.",
+                "Aenean non ante quis justo rhoncus vehicula eget ut diam."
+            ],
+            "openEndedQ5": [
+                "Sed nec massa sit amet tortor volutpat luctus eu at mauris.",
+                "Morbi varius felis in mauris iaculis, at commodo neque semper.",
+                "Phasellus et urna gravida, ullamcorper neque nec, finibus lectus.",
+                "Nunc sed velit eget metus egestas ultrices."
+            ]
         }
     ]
 }

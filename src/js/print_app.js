@@ -37,73 +37,37 @@ d3.json(`http://localhost:3000/user${userId}`, function(data) {
     //display open-ended question responses if has meets threshold 360 responses
     if (hasEnough360Ratings) {
         const freeResponseQuestions = [
-            "Ut a non magna, eget vestibulum ultrices interdum.",
-            "Metus nibh laoreet wisi eu, corporis vehicula aliquam ut eu, mollis et aut mi turpis, lacinia nulla proin tortor ligula.",
-            "Iaculis mauris nec consectetuer, torquent mauris inceptos lacinia purus, aenean mauris lacus mattis vestibulum.",
-            "Donec vestibulum interdum nibh quis, et viverra nonummy in, nec malesuada amet ligula.",
-            "Ut nihil a et sed, metus mattis tristique a pharetra, integer viverra semper eget nec, aenean mi ac non."
+            "Ut a non magna, eget vestibulum ultrices interdum?",
         ];
 
         freeResponseQuestions.forEach((question,i) => {
             let list = document.createElement('ul');
-            list.innerText = question;
+            let title = document.createElement('h4');
+            title.innerText = question;
             list.classList.add(`open-ended-q${i+1}`);
 
-            d3.selectAll('.open-ended-response-container').append(() => {
+            d3.selectAll('.open-ended-responses').append(() => {
+                return title;
+            });
+
+            d3.selectAll('.open-ended-responses').append(() => {
                 return list;
             });
         });
 
-        let questionResponses = data[0][`openEndedQ1`];
-        questionResponses.forEach((response,j) => {
-            let listItem = document.createElement('li');
-            listItem.innerText = response;
-            listItem.classList.add(`open-ended-response`);
-            d3.selectAll(`.open-ended-q1`).append(() => {
-                return listItem;
+        for (i=1; i<=freeResponseQuestions.length; i++) {
+            let question = `openEndedQ${i}`;
+            let questionResponses = data[0][question];
+            let questionClass = `.open-ended-q${i}`;
+            questionResponses.forEach((response) => {
+                let listItem = document.createElement('li');
+                listItem.innerText = response;
+                listItem.classList.add(`open-ended-response`);
+                d3.selectAll(questionClass).append(() => {
+                    return listItem;
+                });
             });
-        });
-
-        questionResponses = data[0][`openEndedQ2`];
-        questionResponses.forEach((response,j) => {
-            let listItem = document.createElement('li');
-            listItem.innerText = response;
-            listItem.classList.add(`open-ended-response`);
-            d3.selectAll(`.open-ended-q2`).append(() => {
-                return listItem;
-            });
-        });
-
-        questionResponses = data[0][`openEndedQ3`];
-        questionResponses.forEach((response,j) => {
-            let listItem = document.createElement('li');
-            listItem.innerText = response;
-            listItem.classList.add(`open-ended-response`);
-            d3.selectAll(`.open-ended-q3`).append(() => {
-                return listItem;
-            });
-        });
-
-        questionResponses = data[0][`openEndedQ4`];
-        questionResponses.forEach((response,j) => {
-            let listItem = document.createElement('li');
-            listItem.innerText = response;
-            listItem.classList.add(`open-ended-response`);
-            d3.selectAll(`.open-ended-q4`).append(() => {
-                return listItem;
-            });
-        });
-
-        questionResponses = data[0][`openEndedQ5`];
-        questionResponses.forEach((response,j) => {
-            let listItem = document.createElement('li');
-            listItem.innerText = response;
-            listItem.classList.add(`open-ended-response`);
-            d3.selectAll(`.open-ended-q5`).append(() => {
-                return listItem;
-            });
-        });
-
+        }
     }
 
     //header with custom name and today's date
@@ -162,7 +126,7 @@ function getStudentData(data,result,type,group) {
                     "Team-building": data[0].Team1-1,
                     "Exchange": data[0].Exchange1-1,
                     "Allocentrism": data[0].Allocentrism1-1,
-                    "Sit. Awareness": data[0].SA1-1,
+                    "SA": data[0].SA1-1,
                     "Agency": data[0].Agency1-1,
                     "Intentionality": data[0].Intentionality1-1,
                     "Logos": data[0].Logos1-1,
@@ -180,7 +144,7 @@ function getStudentData(data,result,type,group) {
                     "Team-building": data[0].Team3-1,
                     "Exchange": data[0].Exchange3-1,
                     "Allocentrism": data[0].Allocentrism3-1,
-                    "Sit. Awareness": data[0].SA3-1,
+                    "SA": data[0].SA3-1,
                     "Agency": data[0].Agency3-1,
                     "Intentionality": data[0].Intentionality3-1,
                     "Logos": data[0].Logos3-1,
@@ -200,7 +164,7 @@ function getStudentData(data,result,type,group) {
                     "Team-building": percentRank(getArrayForPercentRank(data,group,'Team1'),data[0].Team1),
                     "Exchange": percentRank(getArrayForPercentRank(data,group,'Exchange1'),data[0].Exchange1),
                     "Allocentrism": percentRank(getArrayForPercentRank(data,group,'Allocentrism1'),data[0].Allocentrism1),
-                    "Situation Awareness": percentRank(getArrayForPercentRank(data,group,'SA1'),data[0].SA1),
+                    "SA": percentRank(getArrayForPercentRank(data,group,'SA1'),data[0].SA1),
                     "Agency": percentRank(getArrayForPercentRank(data,group,'Agency1'),data[0].Agency1),
                     "Intentionality": percentRank(getArrayForPercentRank(data,group,'Intentionality1'),data[0].Intentionality1),
                     "Logos": percentRank(getArrayForPercentRank(data,group,'Logos1'),data[0].Logos1),
@@ -218,7 +182,7 @@ function getStudentData(data,result,type,group) {
                     "Team-building": percentRank(getArrayForPercentRank(data,group,'Team3'),data[0].Team3),
                     "Exchange": percentRank(getArrayForPercentRank(data,group,'Exchange3'),data[0].Exchange3),
                     "Allocentrism": percentRank(getArrayForPercentRank(data,group,'Allocentrism3'),data[0].Allocentrism3),
-                    "Situation Awareness": percentRank(getArrayForPercentRank(data,group,'SA3'),data[0].SA3),
+                    "SA": percentRank(getArrayForPercentRank(data,group,'SA3'),data[0].SA3),
                     "Agency": percentRank(getArrayForPercentRank(data,group,'Agency3'),data[0].Agency3),
                     "Intentionality": percentRank(getArrayForPercentRank(data,group,'Intentionality3'),data[0].Intentionality3),
                     "Logos": percentRank(getArrayForPercentRank(data,group,'Logos3'),data[0].Logos3),
@@ -256,28 +220,6 @@ function radialBarChart() {
     function init(d) {
         barScale = d3.scale.sqrt().domain(domain).range([0, barHeight]);
 
-        if (domain[1] > 5) {
-            for (i=0; i<=domain[1]; i+=10) {
-                if (i==domain[0]) {
-                    console.log("Percentile");
-                }
-                console.log("Domain: " + i + ", Range: " + barScale(i));
-            }
-        } else {
-            for (i=1; i<=domain[1]; i++) {
-                if (i==domain[0]) {
-                    console.log("Absolute");
-                }
-                console.log("Domain: " + i + ", Range: " + barScale(i));
-            }
-        }
-        let customRange = [];
-        for (i=domain[0]; i<=domain[1]; i++) {
-            let value = 220*(Math.sqrt(i)/Math.sqrt(domain[1]));
-            customRange.push(value);
-        }
-        console.log(customRange);
-
         keys = d3.map(d[0].data).keys();
         numBars = keys.length;
 
@@ -310,6 +252,9 @@ function radialBarChart() {
             .enter()
             .append('circle')
             .attr('r', function(d) {return barScale(d);})
+            .style('stroke', 'grey')
+            .style('stroke-dasharray', '2,2')
+            .style('stroke-width','0.5px')
             .style('fill', 'none');
     }
 
@@ -344,6 +289,8 @@ function radialBarChart() {
         g.append('circle')
             .attr('r', barHeight)
             .classed('outer', true)
+            .style("stroke", "grey")
+            .style("stroke-width","1px")
             .style('fill', 'none');
 
         // Labels
@@ -385,6 +332,7 @@ function radialBarChart() {
 
             g = d3.select(this).select('svg g.radial-barchart');
 
+
             // Layer enter/exit/update
             var layers = g.selectAll('g.layer')
                 .data(d);
@@ -410,6 +358,8 @@ function radialBarChart() {
             segments
                 .enter()
                 .append('path')
+                .classed('bar', true)
+                .attr('id', (i) => `bar-${i}`)
                 .style('fill', function(d, i) {
                     if(!barColors) return;
                     return barColors[i % barColors.length];
@@ -420,7 +370,7 @@ function radialBarChart() {
             segments
                 .transition()
                 .duration(transitionDuration)
-                .attr('d', d3.svg.arc().innerRadius(0).outerRadius(or).startAngle(sa).endAngle(ea))
+                .attr('d', d3.svg.arc().innerRadius(0).outerRadius(or).startAngle(sa).endAngle(ea));
 
             if(!update)
                 renderOverlays(this);
@@ -577,7 +527,7 @@ function constructCharts(data1,data2,hasEnough360Ratings) {
         .domain([0,3])
         .tickValues([0,1,2,3])
         .tickFormat(function(d,i){ return tickLabels[i] })
-        .tickCircleValues([2,3,4]);
+        .tickCircleValues([2,3]);
 
     document.querySelector("#chart1perc").classList.add('hidden');
     document.querySelector("#chart2perc").classList.add('hidden');

@@ -551,7 +551,7 @@ function getArrayForPercentRank(data,group,string){
 }
 
 function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
-    const tickLabels = ["0.1",".2",".3",".4",".5",".6",".7",".8",".9","1.0"];
+    const tickLabels = [".1",".2",".3",".4",".5",".6",".7",".8",".9","1.0"];
     const chartStyling = radialBarChart()
         .barHeight(220)
         .reverseLayerOrder(true)

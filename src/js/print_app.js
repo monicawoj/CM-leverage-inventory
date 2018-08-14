@@ -1,10 +1,16 @@
 //start by getting the unique userId from cookie, or ask for user to provide it
-const userId = getCookie('userId');
+const userId = "2b0b7be450e34ecdb975b0e2168b6734";
+//const url = "https://levinvstaging.com/backend/results/";
+const url = "https://levinvstaging.com/backend/resultst/";
 
-d3.json(`http://localhost:3000/user${userId}`, function(data) {
+//D3 API Reference: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
+var proxy = 'https://cors-anywhere.herokuapp.com/';
+const finalUrl = `${proxy}${url}?id=${userId}`;
+
+d3.json(finalUrl, function(error, data) {
 
     //create options to compare against different subgroups based on the groups that the user belongs to
-    const groupData = data[0].groups;
+    const groupData = data.groups;
     const groupOptionHolders = d3.select('.options')
         .selectAll('.radio')
         .data(groupData)
@@ -27,7 +33,7 @@ d3.json(`http://localhost:3000/user${userId}`, function(data) {
 
     //initialize charts
     let type='Absolute';
-    const hasEnough360Ratings = data[0].hasEnough360Ratings;
+    const hasEnough360Ratings = data.hasEnough360Ratings;
     const chartData = getStudentData(data,userId,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
@@ -57,7 +63,7 @@ d3.json(`http://localhost:3000/user${userId}`, function(data) {
 
         for (i=1; i<=freeResponseQuestions.length; i++) {
             let question = `openEndedQ${i}`;
-            let questionResponses = data[0][question];
+            let questionResponses = data[question];
             let questionClass = `.open-ended-q${i}`;
             questionResponses.forEach((response) => {
                 let listItem = document.createElement('li');
@@ -71,7 +77,7 @@ d3.json(`http://localhost:3000/user${userId}`, function(data) {
     }
 
     //header with custom name and today's date
-    const name = `<span class="purple">Name:</span> ${data[0].first_name} ${data[0].last_name}`;
+    const name = `<span class="purple">Name:</span> ${data.first_name} ${data.last_name}`;
     const date = new Date();
     let dd = date.getDate();
     let mm = date.getMonth()+1;
@@ -114,6 +120,9 @@ function update(data,userId,type,group,hasEnough360Ratings) {
         constructPercentileCharts(self_data,third_data,hasEnough360Ratings);
     }
 
+    const group_name_holder = d3.selectAll('.third .chart .chart-info .chart-title p');
+    console.log(group_name_holder);
+        group_name_holder.html(`vs. ${group}`);
 }
 
 function getStudentData(data,result,type,group) {
@@ -122,36 +131,36 @@ function getStudentData(data,result,type,group) {
         const self_data = [
             {
                 "data": {
-                    "Network": data[0].Network1-1,
-                    "Team-building": data[0].Team1-1,
-                    "Exchange": data[0].Exchange1-1,
-                    "Allocentrism": data[0].Allocentrism1-1,
-                    "SA": data[0].SA1-1,
-                    "Agency": data[0].Agency1-1,
-                    "Intentionality": data[0].Intentionality1-1,
-                    "Logos": data[0].Logos1-1,
-                    "Might": data[0].Might1-1,
-                    "Ethos": data[0].Ethos1-1,
-                    "Coalition": data[0].Coalition1-1,
-                    "Pathos": data[0].Pathos1-1,
+                    "Network": data.Network1-1,
+                    "Team-building": data.Team1-1,
+                    "Exchange": data.Exchange1-1,
+                    "Allocentrism": data.Allocentrism1-1,
+                    "SA": data.SA1-1,
+                    "Agency": data.Agency1-1,
+                    "Intentionality": data.Intentionality1-1,
+                    "Logos": data.Logos1-1,
+                    "Might": data.Might1-1,
+                    "Ethos": data.Ethos1-1,
+                    "Coalition": data.Coalition1-1,
+                    "Pathos": data.Pathos1-1,
                 }
             }
         ];
         const third_data = [
             {
                 "data": {
-                    "Network": data[0].Network3-1,
-                    "Team-building": data[0].Team3-1,
-                    "Exchange": data[0].Exchange3-1,
-                    "Allocentrism": data[0].Allocentrism3-1,
-                    "SA": data[0].SA3-1,
-                    "Agency": data[0].Agency3-1,
-                    "Intentionality": data[0].Intentionality3-1,
-                    "Logos": data[0].Logos3-1,
-                    "Might": data[0].Might3-1,
-                    "Ethos": data[0].Ethos3-1,
-                    "Coalition": data[0].Coalition3-1,
-                    "Pathos": data[0].Pathos3-1,
+                    "Network": data.Network3-1,
+                    "Team-building": data.Team3-1,
+                    "Exchange": data.Exchange3-1,
+                    "Allocentrism": data.Allocentrism3-1,
+                    "SA": data.SA3-1,
+                    "Agency": data.Agency3-1,
+                    "Intentionality": data.Intentionality3-1,
+                    "Logos": data.Logos3-1,
+                    "Might": data.Might3-1,
+                    "Ethos": data.Ethos3-1,
+                    "Coalition": data.Coalition3-1,
+                    "Pathos": data.Pathos3-1,
                 }
             }
         ];
@@ -160,36 +169,36 @@ function getStudentData(data,result,type,group) {
         const self_data = [
             {
                 "data": {
-                    "Network": percentRank(getArrayForPercentRank(data,group,'Network1'),data[0].Network1),
-                    "Team-building": percentRank(getArrayForPercentRank(data,group,'Team1'),data[0].Team1),
-                    "Exchange": percentRank(getArrayForPercentRank(data,group,'Exchange1'),data[0].Exchange1),
-                    "Allocentrism": percentRank(getArrayForPercentRank(data,group,'Allocentrism1'),data[0].Allocentrism1),
-                    "SA": percentRank(getArrayForPercentRank(data,group,'SA1'),data[0].SA1),
-                    "Agency": percentRank(getArrayForPercentRank(data,group,'Agency1'),data[0].Agency1),
-                    "Intentionality": percentRank(getArrayForPercentRank(data,group,'Intentionality1'),data[0].Intentionality1),
-                    "Logos": percentRank(getArrayForPercentRank(data,group,'Logos1'),data[0].Logos1),
-                    "Might": percentRank(getArrayForPercentRank(data,group,'Might1'),data[0].Might1),
-                    "Ethos": percentRank(getArrayForPercentRank(data,group,'Ethos1'),data[0].Ethos1),
-                    "Coalition": percentRank(getArrayForPercentRank(data,group,'Coalition1'),data[0].Coalition1),
-                    "Pathos": percentRank(getArrayForPercentRank(data,group,'Pathos1'),data[0].Pathos1),
+                    "Network": data["group_avgs"][group].Network1,
+                    "Team-building": data["group_avgs"][group].Team1,
+                    "Exchange": data["group_avgs"][group].Exchange1,
+                    "Allocentrism": data["group_avgs"][group].Allocentrism1,
+                    "SA": data["group_avgs"][group].SA1,
+                    "Agency": data["group_avgs"][group].Agency1,
+                    "Intentionality": data["group_avgs"][group].Intentionality1,
+                    "Logos": data["group_avgs"][group].Logos1,
+                    "Might": data["group_avgs"][group].Might1,
+                    "Ethos": data["group_avgs"][group].Ethos1,
+                    "Coalition": data["group_avgs"][group].Coalition1,
+                    "Pathos": data["group_avgs"][group].Pathos1,
                 }
             }
         ];
         const third_data = [
             {
                 "data": {
-                    "Network": percentRank(getArrayForPercentRank(data,group,'Network3'),data[0].Network3),
-                    "Team-building": percentRank(getArrayForPercentRank(data,group,'Team3'),data[0].Team3),
-                    "Exchange": percentRank(getArrayForPercentRank(data,group,'Exchange3'),data[0].Exchange3),
-                    "Allocentrism": percentRank(getArrayForPercentRank(data,group,'Allocentrism3'),data[0].Allocentrism3),
-                    "SA": percentRank(getArrayForPercentRank(data,group,'SA3'),data[0].SA3),
-                    "Agency": percentRank(getArrayForPercentRank(data,group,'Agency3'),data[0].Agency3),
-                    "Intentionality": percentRank(getArrayForPercentRank(data,group,'Intentionality3'),data[0].Intentionality3),
-                    "Logos": percentRank(getArrayForPercentRank(data,group,'Logos3'),data[0].Logos3),
-                    "Might": percentRank(getArrayForPercentRank(data,group,'Might3'),data[0].Might3),
-                    "Ethos": percentRank(getArrayForPercentRank(data,group,'Ethos3'),data[0].Ethos3),
-                    "Coalition": percentRank(getArrayForPercentRank(data,group,'Coalition3'),data[0].Coalition3),
-                    "Pathos": percentRank(getArrayForPercentRank(data,group,'Pathos3'),data[0].Pathos3),
+                    "Network": data["group_avgs"][group].Network3,
+                    "Team-building": data["group_avgs"][group].Team3,
+                    "Exchange": data["group_avgs"][group].Exchange3,
+                    "Allocentrism": data["group_avgs"][group].Allocentrism3,
+                    "SA": data["group_avgs"][group].SA3,
+                    "Agency": data["group_avgs"][group].Agency3,
+                    "Intentionality": data["group_avgs"][group].Intentionality3,
+                    "Logos": data["group_avgs"][group].Logos3,
+                    "Might": data["group_avgs"][group].Might3,
+                    "Ethos": data["group_avgs"][group].Ethos3,
+                    "Coalition": data["group_avgs"][group].Coalition3,
+                    "Pathos": data["group_avgs"][group].Pathos3,
                 }
             }
         ];

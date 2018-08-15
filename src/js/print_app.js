@@ -1,10 +1,9 @@
 //start by getting the unique userId from cookie, or ask for user to provide it
-const userId = "2b0b7be450e34ecdb975b0e2168b6734";
+//const userId = getCookie('resultsid');
 //const url = "https://levinvstaging.com/backend/results/";
+const userId = "2b0b7be450e34ecdb975b0e2168b6734";
 const url = "https://levinvstaging.com/backend/resultst/";
-
-//D3 API Reference: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
-var proxy = 'https://cors-anywhere.herokuapp.com/';
+const proxy = 'https://cors-anywhere.herokuapp.com/';
 const finalUrl = `${proxy}${url}?id=${userId}`;
 
 d3.json(finalUrl, function(error, data) {

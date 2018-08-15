@@ -1,12 +1,10 @@
 //start by getting the unique resultsid from cookie, or ask for user to provide it
 //checkCookie();
 //const userId = getCookie('resultsid');
-const userId = "2b0b7be450e34ecdb975b0e2168b6734";
 //const url = "https://levinvstaging.com/backend/results/";
+const userId = "2b0b7be450e34ecdb975b0e2168b6734";
 const url = "https://levinvstaging.com/backend/resultst/";
-
-//D3 API Reference: https://github.com/d3/d3-3.x-api-reference/blob/master/Quantitative-Scales.md
-var proxy = 'https://cors-anywhere.herokuapp.com/';
+const proxy = 'https://cors-anywhere.herokuapp.com/';
 const finalUrl = `${proxy}${url}?id=${userId}`;
 
 d3.json(finalUrl, function(error, data) {
@@ -14,8 +12,6 @@ d3.json(finalUrl, function(error, data) {
     if (error) {
         return console.warn(error);
     }
-
-    console.log(data);
 
     //create options to compare against different subgroups based on the groups that the user belongs to
     const groupData = data.groups;
@@ -53,6 +49,9 @@ d3.json(finalUrl, function(error, data) {
 
     //display open-ended question responses if has meets threshold 360 responses
     if (hasEnough360Ratings) {
+
+        d3.select('.open-ended-response-container h3').innerText = "Additional thoughts from your 360 Raters";
+
         const freeResponseQuestions = [
             "Ut a non magna, eget vestibulum ultrices interdum?",
         ];

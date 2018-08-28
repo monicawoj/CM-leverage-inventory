@@ -6,9 +6,11 @@ const userId = "2b0b7be450e34ecdb975b0e2168b6734";
 const url = "https://levinvstaging.com/backend/resultst/";
 const proxy = 'https://cors-anywhere.herokuapp.com/';
 const finalUrl = `${proxy}${url}?id=${userId}`;
+//const url = `https://levinventory.wpengine.com/wp-content/themes/make/leverage-inventory/user1.json`;
+//const finalUrl = `${proxy}${url}`;
 
 d3.json(finalUrl, function(error, data) {
-
+    console.log(data);
     if (error) {
         return console.warn(error);
     }
@@ -29,16 +31,22 @@ d3.json(finalUrl, function(error, data) {
 
     groupOptionHolders.append('label')
         .attr('for',function(d) { return d })
-        .text(function(d) {return d});
+        .text(function(d) {return d.toUpperCase()});
 
     let group = groupData[0];
+    console.log(group);
     d3.select(`input#${group}`)
         .property('checked',true);
 
     //create initial charts
     let type='Absolute';
-    const hasEnough360Ratings = data.hasEnough360Ratings;
-    const chartData = getStudentData(data,userId,type,group);
+    //const hasEnough360Ratings = data.hasEnough360Ratings;
+    const hasEnough360Ratings = 1;
+    // if (hasEnough360Ratings == 0) {
+    //   document.querySelector('.self .color-legend').style.display = 'flex';
+    // }
+
+    const chartData = getStudentData(data,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
     if (type==='Absolute') {
@@ -94,7 +102,7 @@ d3.json(finalUrl, function(error, data) {
                 button.classList.remove('button-clicked');
             });
             this.classList.add('button-clicked');
-            update(data,userId,this.innerText,getValue("comparison-group"));
+            update(data,this.innerText,getValue("comparison-group",hasEnough360Ratings));
             if (this.innerText === 'Percentile') {
                 type='Percentile';
                 document.querySelector(".percentile-options").classList.remove('hidden');
@@ -110,7 +118,7 @@ d3.json(finalUrl, function(error, data) {
     document.getElementsByName("comparison-group").forEach(element => {
         element.addEventListener("click", function(event) {
             group = this.value;
-            update(data,userId,"Percentile",getValue("comparison-group"));
+            update(data,"Percentile",getValue("comparison-group",hasEnough360Ratings));
         });
     });
 
@@ -126,20 +134,18 @@ function getValue(group) {
     return result;
 }
 
-function update(data,userId,type,group) {
-    d3.select("#userIdInput").text(userId);
-    d3.select("#userIdInput").property("value", userId);
-    const chartData = getStudentData(data,userId,type,group);
+function update(data,type,group,hasEnough360Ratings) {
+    const chartData = getStudentData(data,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
     if (type==='Absolute') {
-        constructCharts(self_data,third_data);
+        constructCharts(self_data,third_data,hasEnough360Ratings);
     } else {
-        constructPercentileCharts(self_data,third_data);
+        constructPercentileCharts(self_data,third_data,hasEnough360Ratings);
     }
 }
 
-function getStudentData(data,result,type,group) {
+function getStudentData(data,type,group) {
 
     if (type==='Absolute') {
         const self_data = [
@@ -213,14 +219,15 @@ function getStudentData(data,result,type,group) {
                     "Ethos": data["group_avgs"][group].Ethos3,
                     "Coalition": data["group_avgs"][group].Coalition3,
                     "Pathos": data["group_avgs"][group].Pathos3,
-                }
+                },
+                "Submissions": data["group_avgs"][group].Submissions
             }
         ];
         return [self_data, third_data];
     }
 }
 
-function radialBarChart() {
+function radialBarChart(centerAxisLabels=false) {
     // Configurable variables
     var margin = {top: 20, right: 20, bottom: 20, left: 20};
     var barHeight = 100;
@@ -281,7 +288,7 @@ function radialBarChart() {
             .style('fill', 'none');
     }
 
-    function renderOverlays(container) {
+    function renderOverlays(container,centerAxisLabels) {
         var g = d3.select(container).select('svg g.radial-barchart');
 
         // Spokes
@@ -297,7 +304,7 @@ function radialBarChart() {
         // Axis
         var axisScale = d3.scale.sqrt().domain(domain).range([0, -barHeight]);
 
-        var axis = d3.svg.axis().scale(axisScale).orient('right');
+        var axis = d3.svg.axis().orient('top').scale(axisScale).orient('right');
         if(tickValues && tickFormat) {
             axis.tickValues(tickValues).tickFormat(tickFormat);
         } else if (tickValues) {
@@ -306,7 +313,17 @@ function radialBarChart() {
 
         g.append('g')
             .classed('axis', true)
-            .call(axis);
+            .call(axis)
+          .selectAll('text')
+            .attr("y", function(d) {
+              return d==0 || d==1 || d==2 || d==3 ? -5 : 0
+            })
+            .attr("x", function(d) {
+              return d==0 || d==1 || d==2 || d==3 ? 0 : 7
+            })
+            .style("text-anchor", function(d) {
+              return d==0 || d==1 || d==2 || d==3 ? "middle" : "start"
+            });
 
         // Outer circle
         g.append('circle')
@@ -396,6 +413,10 @@ function radialBarChart() {
                     return m.values();
                 });
 
+            /* Format to two decimals */
+            const formatTwoDecimals = d3.format(".2f");
+            const formatZeroDecimals = (x) => d3.format(".0f")(x*100);
+
             segments
                 .enter()
                 .append('path')
@@ -419,7 +440,7 @@ function radialBarChart() {
                         .select("text")
                         .text(function() {
                             if (domain[1] === 3) {
-                                return d + 1;
+                                return formatTwoDecimals(d+1);
                             } else {
                                 return d;
                             }
@@ -503,6 +524,12 @@ function radialBarChart() {
         return chart;
     };
 
+    chart.tickSize = function(_) {
+        if (!arguments.length) return tickSize;
+        tickSize = _;
+        return chart;
+    };
+
     chart.colorLabels = function(_) {
         if (!arguments.length) return colorLabels;
         colorLabels = _;
@@ -555,16 +582,17 @@ function getArrayForPercentRank(data,group,string){
 }
 
 function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
-    const tickLabels = [".1",".2",".3",".4",".5",".6",".7",".8",".9","1.0"];
-    const chartStyling = radialBarChart()
-        .barHeight(220)
-        .reverseLayerOrder(true)
-        .capitalizeLabels(true)
-        .barColors([ '#9999ff', '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff' /* Pathos */,])  /* can define bar colors b/c fixed location of tactics around circle */
-        .domain([0,1])
-        .tickValues([.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0])
-        .tickFormat(function(d,i){ return tickLabels[i] })
-        .tickCircleValues([.1,.2,.3,.4,.5,.6,.7,.8,.9,1.0]);
+  const tickLabels = ["10th","20th","30th","40th","50th","60th","70th","80th","90th"];
+  const chartStyling = radialBarChart()
+      .barHeight(220)
+      .reverseLayerOrder(true)
+      .capitalizeLabels(true)
+      .barColors([ '#9999ff', '#9999ff', '#9999ff', '#9999ff', '#abf9b4', '#abf9b4', '#abf9b4', '#abf9b4', '#ff7f7f', '#ff7f7f', '#9999ff', '#9999ff' /* Pathos */,])  /* can define bar colors b/c fixed location of tactics around circle */
+      .domain([0,1])
+      .tickSize(1)
+      .tickValues([.1,.2,.3,.4,.5,.6,.7,.8,.9])
+      .tickFormat(function(d,i){ return tickLabels[i] })
+      .tickCircleValues([.1,.2,.3,.4,.5,.6,.7,.8,.9]);
 
     document.querySelector("#chart1abs").classList.add('hidden');
     document.querySelector("#chart2abs").classList.add('hidden');
@@ -582,14 +610,16 @@ function constructPercentileCharts(data1,data2,hasEnough360Ratings) {
         .datum(data2)
         .call(chartStyling);
 
+    document.querySelector('.submissions-holder span').innerHTML = data2[0].Submissions;
+
     if (hasEnough360Ratings == 0) {
         document.querySelectorAll('.third').forEach(elem => elem.style.display = 'none');
     }
 }
 
 function constructCharts(data1,data2,hasEnough360Ratings) {
-    const tickLabels = [1,2,3,4];
-    const chartStyling = radialBarChart()
+    const tickLabels = ["1 (rarely or never)","2 (occasionally)","3 (often)","4 (almost always)"];
+    const chartStyling = radialBarChart(true)
         .barHeight(220)
         .reverseLayerOrder(true)
         .capitalizeLabels(true)

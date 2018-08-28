@@ -40,8 +40,8 @@ d3.json(finalUrl, function(error, data) {
 
     //create initial charts
     let type='Absolute';
-    //const hasEnough360Ratings = data.hasEnough360Ratings;
-    const hasEnough360Ratings = 1;
+    const hasEnough360Ratings = data.hasEnough360Ratings;
+    //const hasEnough360Ratings = 1;
     // if (hasEnough360Ratings == 0) {
     //   document.querySelector('.self .color-legend').style.display = 'flex';
     // }

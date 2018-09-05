@@ -1,13 +1,12 @@
-//start by getting the unique resultsid from cookie, or ask for user to provide it
-//checkCookie();
-//const userId = getCookie('resultsid');
-//const url = "https://levinvstaging.com/backend/results/";
-const userId = "2b0b7be450e34ecdb975b0e2168b6734";
-const url = "https://levinvstaging.com/backend/resultst/";
-const proxy = 'https://cors-anywhere.herokuapp.com/';
-const finalUrl = `${proxy}${url}?id=${userId}`;
-//const url = `https://levinventory.wpengine.com/wp-content/themes/make/leverage-inventory/user1.json`;
-//const finalUrl = `${proxy}${url}`;
+//dev
+const userId = getCookie('resultsid');
+const url = "https://app.levinvstaging.com/backend/results/";
+const finalUrl = `${url}?id=${userId}`;
+
+//production
+// const userId = getCookie('resultsid');
+// const url = "https://app.leverageinventory.com/backend/results/";
+// const finalUrl = `${url}?id=${userId}`;
 
 d3.json(finalUrl, function(error, data) {
     console.log(data);
@@ -34,18 +33,12 @@ d3.json(finalUrl, function(error, data) {
         .text(function(d) {return d.toUpperCase()});
 
     let group = groupData[0];
-    console.log(group);
     d3.select(`input#${group}`)
         .property('checked',true);
 
     //create initial charts
     let type='Absolute';
     const hasEnough360Ratings = data.hasEnough360Ratings;
-    //const hasEnough360Ratings = 1;
-    // if (hasEnough360Ratings == 0) {
-    //   document.querySelector('.self .color-legend').style.display = 'flex';
-    // }
-
     const chartData = getStudentData(data,type,group);
     const self_data = chartData[0];
     const third_data = chartData[1];
@@ -54,6 +47,9 @@ d3.json(finalUrl, function(error, data) {
     } else {
         constructPercentileCharts(self_data,third_data,hasEnough360Ratings);
     }
+    const sorted_self_data = chartData[2];
+    const sorted_third_data = chartData[3];
+    createSortedChart(sorted_self_data,"sorted-self-chart","self");
 
     //display open-ended question responses if has meets threshold 360 responses
     if (hasEnough360Ratings) {
@@ -105,13 +101,27 @@ d3.json(finalUrl, function(error, data) {
             update(data,this.innerText,getValue("comparison-group",hasEnough360Ratings));
             if (this.innerText === 'Percentile') {
                 type='Percentile';
+                d3.select('.sort-button').classed('hidden', true);
+                d3.select('.sort-button-label').classed('hidden', true);
                 document.querySelector(".percentile-options").classList.remove('hidden');
             } else {
                 type='Absolute';
                 group=groupData[0];
+                d3.select('.sort-button').classed('hidden', false);
+                d3.select('.sort-button-label').classed('hidden', false);
                 document.querySelector(".percentile-options").classList.add('hidden');
             }
         });
+    });
+
+    //update charts when user checks "show rank" checkbox
+    d3.select(".sort-button").on("change",function() {
+      if (this.checked) {
+        createSortedChart(sorted_self_data,"sorted-self-chart","self");
+      }
+      else {
+        removeSortedChart("sorted-self-chart");
+      }
     });
 
     //update charts when percentile comparison group changes
@@ -146,7 +156,6 @@ function update(data,type,group,hasEnough360Ratings) {
 }
 
 function getStudentData(data,type,group) {
-
     if (type==='Absolute') {
         const self_data = [
             {
@@ -155,7 +164,7 @@ function getStudentData(data,type,group) {
                     "Team-building": data.Team1-1,
                     "Exchange": data.Exchange1-1,
                     "Allocentrism": data.Allocentrism1-1,
-                    "SA": data.SA1-1,
+                    "Sit. Awareness": data.SA1-1,
                     "Agency": data.Agency1-1,
                     "Intentionality": data.Intentionality1-1,
                     "Logos": data.Logos1-1,
@@ -173,7 +182,7 @@ function getStudentData(data,type,group) {
                     "Team-building": data.Team3-1,
                     "Exchange": data.Exchange3-1,
                     "Allocentrism": data.Allocentrism3-1,
-                    "SA": data.SA3-1,
+                    "Sit. Awareness": data.SA3-1,
                     "Agency": data.Agency3-1,
                     "Intentionality": data.Intentionality3-1,
                     "Logos": data.Logos3-1,
@@ -184,7 +193,15 @@ function getStudentData(data,type,group) {
                 }
             }
         ];
-        return [self_data, third_data];
+        const sorted_self_data_temp=sortProperties(self_data[0].data);
+        const sorted_self_data = sorted_self_data_temp.map(function(item) {
+          return {"name":item[0], "value": item[1]}
+        });
+        const sorted_third_data_temp=sortProperties(third_data[0].data);
+        const sorted_third_data = sorted_third_data_temp.map(function(item) {
+          return {"name":item[0], "value": item[1]}
+        });
+        return [self_data, third_data, sorted_self_data, sorted_third_data];
     } else {
         const self_data = [
             {
@@ -193,7 +210,7 @@ function getStudentData(data,type,group) {
                     "Team-building": data["group_avgs"][group].Team1,
                     "Exchange": data["group_avgs"][group].Exchange1,
                     "Allocentrism": data["group_avgs"][group].Allocentrism1,
-                    "SA": data["group_avgs"][group].SA1,
+                    "Sit. Awareness": data["group_avgs"][group].SA1,
                     "Agency": data["group_avgs"][group].Agency1,
                     "Intentionality": data["group_avgs"][group].Intentionality1,
                     "Logos": data["group_avgs"][group].Logos1,
@@ -211,7 +228,7 @@ function getStudentData(data,type,group) {
                     "Team-building": data["group_avgs"][group].Team3,
                     "Exchange": data["group_avgs"][group].Exchange3,
                     "Allocentrism": data["group_avgs"][group].Allocentrism3,
-                    "SA": data["group_avgs"][group].SA3,
+                    "Sit. Awareness": data["group_avgs"][group].SA3,
                     "Agency": data["group_avgs"][group].Agency3,
                     "Intentionality": data["group_avgs"][group].Intentionality3,
                     "Logos": data["group_avgs"][group].Logos3,
@@ -223,7 +240,15 @@ function getStudentData(data,type,group) {
                 "Submissions": data["group_avgs"][group].Submissions
             }
         ];
-        return [self_data, third_data];
+        const sorted_self_data_temp=sortProperties(self_data[0].data);
+        const sorted_self_data = sorted_self_data_temp.map(function(item) {
+          return {"name":item[0], "value": item[1]}
+        });
+        const sorted_third_data_temp=sortProperties(third_data[0].data);
+        const sorted_third_data = sorted_third_data_temp.map(function(item) {
+          return {"name":item[0], "value": item[1]}
+        });
+        return [self_data, third_data, sorted_self_data, sorted_third_data];
     }
 }
 
@@ -349,9 +374,11 @@ function radialBarChart(centerAxisLabels=false) {
             .style('text-anchor', 'middle')
             .style('fill', function(d, i) {return colorLabels ? barColors[i % barColors.length] : null;})
             .append('textPath')
+            .attr("class","textpath")
             .attr('xlink:href', '#label-path')
             .attr('startOffset', function(d, i) {return i * 100 / numBars + 50 / numBars + '%';})
             .text(function(d) {return capitalizeLabels ? d.toUpperCase() : d;});
+
     }
 
     function chart(selection) {
@@ -460,6 +487,7 @@ function radialBarChart(centerAxisLabels=false) {
 
             if(!update)
                 renderOverlays(this);
+
         });
 
     }
@@ -682,4 +710,123 @@ function getCookie(cname) {
         }
     }
     return "";
+}
+
+function sortProperties(obj)
+{
+  // convert object into array
+	var sortable=[];
+	for(var key in obj)
+		if(obj.hasOwnProperty(key))
+			sortable.push([key, obj[key]]); // each item is an array in format [key, value]
+
+	// sort items by value
+	sortable.sort(function(a, b)
+	{
+	  return a[1]-b[1]; // compare numbers
+	});
+	return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
+}
+
+function createSortedChart(data,handler,container) {
+
+  var margin = {
+      top: 15,
+      right: 25,
+      bottom: 15,
+      left: 120
+  };
+
+  var width = 480 - margin.left - margin.right,
+      height = 480 - margin.top - margin.bottom;
+
+  var svg = d3.select(`.${container} .chart-holder`).insert("svg",".chart.active")
+      .classed(`${handler}`,true)
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  // tooltips
+  var tooltip = d3.select(`.self .chart-holder`).append('div')
+      .attr('class', 'tooltip')
+      .style('display', 'none');
+  function mouseover(){
+      tooltip.style('display', 'inline');
+  }
+  function mousemove(){
+      var d = d3.select(this).data()[0]
+      tooltip
+          //.html(d.name + '<hr/>' + d.value + '<hr/>' + d.definition)
+          .html(d.name + '<hr/>' + d3.format(",.2f")(d.value))
+          .style('left', (d3.event.pageX - 34) + 'px')
+          .style('top', (d3.event.pageY - 12) + 'px');
+  }
+  function mouseout(){
+      tooltip.style('display', 'none');
+  }
+
+  var x = d3.scale.linear()
+      .range([0, width])
+      .domain([0, d3.max(data, function (d) {
+          return d.value;
+      })]);
+
+  var y = d3.scale.ordinal()
+      .rangeRoundBands([height, 0], .1)
+      .domain(data.map(function (d) {
+          return d.name;
+      }));
+
+  //make y axis to show bar names
+  var yAxis = d3.svg.axis()
+      .scale(y)
+      //no tick marks
+      .tickSize(0)
+      .orient("left");
+
+  var gy = svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+
+  var bars = svg.selectAll(".bar")
+      .data(data)
+      .enter()
+      .append("g")
+
+      //append rects
+      bars.append("rect")
+          .attr("class", "bar")
+          .attr("y", function (d) {
+              return y(d.name);
+          })
+          .attr("height", y.rangeBand())
+          .attr("x", 0)
+          .attr("width", function (d) {
+              return x(d.value);
+          })
+          .attr("fill","grey")
+          .on('mouseover', mouseover)
+          .on('mousemove', mousemove)
+          .on('mouseout', mouseout);
+
+      //add a value label to the right of each bar
+      bars.append("text")
+          .attr("class", "label")
+          //y position of the label is halfway down the bar
+          .attr("y", function (d) {
+              return y(d.name) + y.rangeBand() / 2 + 4;
+          })
+          //x position is 3 pixels to the right of the bar
+          .attr("x", function (d) {
+              return x(d.value) + 3;
+          })
+          .text(function (d) {
+              return d3.format(",.2f")(d.value);
+              //return d.value;
+          });
+}
+
+function removeSortedChart(handler) {
+  d3.select(`.${handler}`).remove();
 }

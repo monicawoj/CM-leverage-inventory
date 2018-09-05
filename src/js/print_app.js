@@ -1,12 +1,12 @@
-//start by getting the unique userId from cookie, or ask for user to provide it
-//const userId = getCookie('resultsid');
-//const url = "https://levinvstaging.com/backend/results/";
-const userId = "2b0b7be450e34ecdb975b0e2168b6734";
-const url = "https://levinvstaging.com/backend/resultst/";
-const proxy = 'https://cors-anywhere.herokuapp.com/';
-//const finalUrl = `${proxy}${url}?id=${userId}`;
-//const url = `https://levinventory.wpengine.com/wp-content/themes/make/leverage-inventory/user1.json`;
-const finalUrl = `${proxy}${url}`;
+//dev
+const userId = getCookie('resultsid');
+const url = "http://app.levinvstaging.com/backend/results/";
+const finalUrl = `${url}?id=${userId}`;
+
+//production
+// const userId = getCookie('resultsid');
+// const url = "https://app.leverageinventory.com/backend/results/";
+// const finalUrl = `${url}?id=${userId}`;
 
 d3.json(finalUrl, function(error, data) {
     executeAndPrint(data, print);
@@ -139,7 +139,7 @@ function getStudentData(data,type,group) {
                     "Team-building": data.Team1-1,
                     "Exchange": data.Exchange1-1,
                     "Allocentrism": data.Allocentrism1-1,
-                    "SA": data.SA1-1,
+                    "Sit. Awareness": data.SA1-1,
                     "Agency": data.Agency1-1,
                     "Intentionality": data.Intentionality1-1,
                     "Logos": data.Logos1-1,
@@ -157,7 +157,7 @@ function getStudentData(data,type,group) {
                     "Team-building": data.Team3-1,
                     "Exchange": data.Exchange3-1,
                     "Allocentrism": data.Allocentrism3-1,
-                    "SA": data.SA3-1,
+                    "Sit. Awareness": data.SA3-1,
                     "Agency": data.Agency3-1,
                     "Intentionality": data.Intentionality3-1,
                     "Logos": data.Logos3-1,
@@ -177,7 +177,7 @@ function getStudentData(data,type,group) {
                     "Team-building": data["group_avgs"][group].Team1,
                     "Exchange": data["group_avgs"][group].Exchange1,
                     "Allocentrism": data["group_avgs"][group].Allocentrism1,
-                    "SA": data["group_avgs"][group].SA1,
+                    "Sit. Awareness": data["group_avgs"][group].SA1,
                     "Agency": data["group_avgs"][group].Agency1,
                     "Intentionality": data["group_avgs"][group].Intentionality1,
                     "Logos": data["group_avgs"][group].Logos1,
@@ -195,7 +195,7 @@ function getStudentData(data,type,group) {
                     "Team-building": data["group_avgs"][group].Team3,
                     "Exchange": data["group_avgs"][group].Exchange3,
                     "Allocentrism": data["group_avgs"][group].Allocentrism3,
-                    "SA": data["group_avgs"][group].SA3,
+                    "Sit. Awareness": data["group_avgs"][group].SA3,
                     "Agency": data["group_avgs"][group].Agency3,
                     "Intentionality": data["group_avgs"][group].Intentionality3,
                     "Logos": data["group_avgs"][group].Logos3,

@@ -16,8 +16,16 @@
   </div>
 
   <div class="description-holder">
-    <p>Each wedge shows your score for a particular influence strategy. The scale is frequency-of-use, in percentiles, relative to full-time Wharton MBAs in the 2016 classes (n=217). "3rd-party Ratings" are relative to other students' 3rd-party ratings (aka “Section IV. Benchmark Comparison” in your Leverage Inventory report) and “Self Ratings” are relative to other students’ self ratings (not reported in your Leverage Inventory report).</p>
+    <p>Your Leverage Inventory results are displayed in two views: <strong>Absolute</strong> and <strong>Percentile</strong>. Both views translate your influence activity into <a href="https://leverageinventory.com/about/influence-tactics/">12 influence tactics</a>:</p>
+    <p>
+      <a href="http://levinventory.wpengine.com/?page_id=42">Agency</a> | <a href="http://levinventory.wpengine.com/?page_id=34">Allocentrism</a> | <a href="http://levinventory.wpengine.com/?page_id=38">Coalitions</a> | <a href="http://levinventory.wpengine.com/?page_id=31">Ethos</a> | <a href="http://levinventory.wpengine.com/?page_id=35">Exchange</a> | <a href="http://levinventory.wpengine.com/?page_id=40">Intentionality</a> | <a href="http://levinventory.wpengine.com/?page_id=33">Logos</a> | <a href="http://levinventory.wpengine.com/?page_id=36">Might</a> | <a href="http://levinventory.wpengine.com/?page_id=37">Networks</a> | <a href="http://levinventory.wpengine.com/?page_id=32">Pathos</a> | <a href="http://levinventory.wpengine.com/?page_id=41">Situation Awareness</a> | <a href="http://levinventory.wpengine.com/?page_id=39">Team-building</a>
+    </p>
+    <p>
+      Each influence tactic maps to a unique subset of assessment questions, with individual scores that make up an average. The <strong>Absolute</strong> view reflects your average score for each influence tactic (1 = Rarely or Never, 2 = Occasionally, 3 = Often, 4 = Almost Always.) The <strong>Percentile</strong> view reflects how much you favor each tactic compared to other groups of people. The default comparison group for this view is your immediate class. For example, if you scored in the 80th percentile for a tactic, you use that tactic more than 80% of your classmates.
+    </p>
+
   </div>
+  <p>&nbsp;</p>
 
   <div class='toggle-and-legend-holder'>
   <form class="selected-student">
@@ -36,7 +44,6 @@
         This group contains: <span></span> submissions.
       </div>
     </div>
-
   </form>
   <div class="color-legend">
     <div class="hard">
@@ -56,31 +63,38 @@
 
   <div class="chart-holder">
     <div class="self">
-      <div class= "chart" id="chart1abs">
-        <div class="chart-info">
-          <h3 class="chart-title">Self-Assessment</h3>
-        </div>
+      <div class="chart-info">
+        <h3 class="chart-title">Self-Assessment</h3>
+        <label class="sort-button-label"><input type="checkbox" class="sort-button" checked> Show sorted values</label>
       </div>
-      <div class= "chart hidden" id="chart1perc">
-        <div class="chart-info">
-          <h3 class="chart-title">Self-Assessment</h3>
+      <div class="chart-holder">
+        <div class= "chart" id="chart1abs">
+        </div>
+        <div class= "chart hidden" id="chart1perc">
+          <!-- <div class="chart-info">
+            <h3 class="chart-title">Self-Assessment</h3>
+          </div> -->
         </div>
       </div>
     </div>
     <div class="third">
+      <div class="chart-info">
+        <h3 class="chart-title">360 Assessment</h3>
+      </div>
       <div class= "chart" id="chart2abs">
-        <div class="chart-info">
-          <h3 class="chart-title">360 Assessment</h3>
-        </div>
       </div>
       <div class= "chart hidden" id="chart2perc">
-        <div class="chart-info">
+        <!-- <div class="chart-info">
           <div>
             <h3 class="chart-title">360 Assessment</h3>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
+  </div>
+
+  <div class="description-holder">
+    <p style="font-size: 14px;">You may notice the tick marks on each axis are not spaced equally. This is intentional. If the tick marks were spaced equally on the axis, the corresponding area for each score would not be proportionate, and thus would create a skewed view. Instead, the tick marks are spaced on the axis so that the areas of different scores are directly proportionate.</p>
   </div>
 
   <div class= "open-ended-response-container">

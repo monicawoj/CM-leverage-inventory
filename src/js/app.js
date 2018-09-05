@@ -1,12 +1,15 @@
 //dev
-const userId = getCookie('resultsid');
-const url = "https://app.levinvstaging.com/backend/results/";
-const finalUrl = `${url}?id=${userId}`;
+// const userId = getCookie('resultsid');
+// const url = "https://app.levinvstaging.com/backend/results/";
+// const finalUrl = `${url}?id=${userId}`;
 
 //production
 // const userId = getCookie('resultsid');
 // const url = "https://app.leverageinventory.com/backend/results/";
 // const finalUrl = `${url}?id=${userId}`;
+
+//local
+const finalUrl = 'https://app.leverageinventory.com/backend/results/?id=4260ccb2-60fe-46ba-8122-7ccd233cbf2d';
 
 d3.json(finalUrl, function(error, data) {
     console.log(data);
@@ -37,19 +40,26 @@ d3.json(finalUrl, function(error, data) {
         .property('checked',true);
 
     //create initial charts
-    let type='Absolute';
     const hasEnough360Ratings = data.hasEnough360Ratings;
-    const chartData = getStudentData(data,type,group);
+    //const hasEnough360Ratings = 0;
+    const chartData = getStudentData(data,'Absolute',group);
     const self_data = chartData[0];
     const third_data = chartData[1];
-    if (type==='Absolute') {
-        constructCharts(self_data,third_data,hasEnough360Ratings);
-    } else {
-        constructPercentileCharts(self_data,third_data,hasEnough360Ratings);
-    }
     const sorted_self_data = chartData[2];
     const sorted_third_data = chartData[3];
-    createSortedChart(sorted_self_data,"sorted-self-chart","self");
+    constructCharts(self_data,third_data,hasEnough360Ratings);
+    createSortedChart(sorted_self_data,"chart sorted","chart-holder-self");
+
+    //if hasEnough360Ratings, create sorted chart for 360 ratings
+    if (hasEnough360Ratings) {
+      createSortedChart(sorted_third_data,"chart sorted","chart-holder-third");
+    }
+    else {
+      d3.select('.chart-holder-self')
+        .style('display','flex');
+      d3.select('.chart-holder-self svg')
+        .style('margin-right','30px');
+    }
 
     //display open-ended question responses if has meets threshold 360 responses
     if (hasEnough360Ratings) {
@@ -79,14 +89,19 @@ d3.json(finalUrl, function(error, data) {
             let question = `openEndedQ${i}`;
             let questionResponses = data[question];
             let questionClass = `.open-ended-q${i}`;
-            questionResponses.forEach((response) => {
-                let listItem = document.createElement('li');
-                listItem.innerText = response;
-                listItem.classList.add(`open-ended-response`);
-                d3.selectAll(questionClass).append(() => {
-                    return listItem;
-                });
-            });
+            if (questionResponses) {
+              d3.select('.open-ended-responses').classed('hidden',false);
+              questionResponses.forEach((response) => {
+                  let listItem = document.createElement('li');
+                  listItem.innerText = response;
+                  listItem.classList.add(`open-ended-response`);
+                  d3.selectAll(questionClass).append(() => {
+                      return listItem;
+                  });
+              });
+            } else {
+              d3.select('.open-ended-responses').classed('hidden',true);
+            }
         }
     }
 
@@ -101,27 +116,17 @@ d3.json(finalUrl, function(error, data) {
             update(data,this.innerText,getValue("comparison-group",hasEnough360Ratings));
             if (this.innerText === 'Percentile') {
                 type='Percentile';
-                d3.select('.sort-button').classed('hidden', true);
-                d3.select('.sort-button-label').classed('hidden', true);
+                removeSortedChart('chart-holder-self');
+                removeSortedChart('chart-holder-third');
                 document.querySelector(".percentile-options").classList.remove('hidden');
             } else {
                 type='Absolute';
                 group=groupData[0];
-                d3.select('.sort-button').classed('hidden', false);
-                d3.select('.sort-button-label').classed('hidden', false);
+                showSortedChart('chart-holder-self');
+                showSortedChart('chart-holder-third');
                 document.querySelector(".percentile-options").classList.add('hidden');
             }
         });
-    });
-
-    //update charts when user checks "show rank" checkbox
-    d3.select(".sort-button").on("change",function() {
-      if (this.checked) {
-        createSortedChart(sorted_self_data,"sorted-self-chart","self");
-      }
-      else {
-        removeSortedChart("sorted-self-chart");
-      }
     });
 
     //update charts when percentile comparison group changes
@@ -193,9 +198,9 @@ function getStudentData(data,type,group) {
                 }
             }
         ];
-        const sorted_self_data_temp=sortProperties(self_data[0].data);
+        const sorted_self_data_temp = sortProperties(self_data[0].data);
         const sorted_self_data = sorted_self_data_temp.map(function(item) {
-          return {"name":item[0], "value": item[1]}
+          return {"name":item[0], "value": item[1], "definition": matchDefinition(item[0])}
         });
         const sorted_third_data_temp=sortProperties(third_data[0].data);
         const sorted_third_data = sorted_third_data_temp.map(function(item) {
@@ -448,7 +453,7 @@ function radialBarChart(centerAxisLabels=false) {
                 .enter()
                 .append('path')
                 .classed('bar', true)
-                .attr('id', (i) => `bar-${i}`)
+                .attr('id', (d,i) => `bar-${d}`)
                 .on("mouseover", function(d) {
                     d3.selectAll('.bar').style('opacity',0.5);
                     d3.select(event.target).style('opacity','1');
@@ -728,7 +733,7 @@ function sortProperties(obj)
 	return sortable; // array in format [ [ key1, val1 ], [ key2, val2 ], ... ]
 }
 
-function createSortedChart(data,handler,container) {
+function createSortedChart(data,className,container) {
 
   var margin = {
       top: 15,
@@ -737,33 +742,37 @@ function createSortedChart(data,handler,container) {
       left: 120
   };
 
-  var width = 480 - margin.left - margin.right,
+  var width = 400 - margin.left - margin.right,
       height = 480 - margin.top - margin.bottom;
 
-  var svg = d3.select(`.${container} .chart-holder`).insert("svg",".chart.active")
-      .classed(`${handler}`,true)
+  var svg = d3.select(`.${container}`).insert("svg",".chart")
+      .classed(`${className}`,true)
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   // tooltips
-  var tooltip = d3.select(`.self .chart-holder`).append('div')
+  var tooltip = d3.select(`.${container}`).append('div')
       .attr('class', 'tooltip')
       .style('display', 'none');
+
   function mouseover(){
       tooltip.style('display', 'inline');
+      d3.selectAll('.bar').style('opacity',0.5);
+      d3.select(this).style('opacity',1);
   }
   function mousemove(){
       var d = d3.select(this).data()[0]
       tooltip
-          //.html(d.name + '<hr/>' + d.value + '<hr/>' + d.definition)
-          .html(d.name + '<hr/>' + d3.format(",.2f")(d.value))
-          .style('left', (d3.event.pageX - 34) + 'px')
-          .style('top', (d3.event.pageY - 12) + 'px');
+        //.html(d.name + '<hr/>' + d3.format(",.2f")(d.value) + '<hr/>' + d.definition)
+        .html(d.name + '<hr/>' + d.definition)
+        .style('left', (d3.event.pageX - 34) + 'px')
+        .style('top', (d3.event.pageY - 12) + 'px');
   }
   function mouseout(){
       tooltip.style('display', 'none');
+      d3.selectAll('.bar').style('opacity','1');
   }
 
   var x = d3.scale.linear()
@@ -797,6 +806,7 @@ function createSortedChart(data,handler,container) {
       //append rects
       bars.append("rect")
           .attr("class", "bar")
+          .attr('id', (d,i) => `bar-${d.name}`)
           .attr("y", function (d) {
               return y(d.name);
           })
@@ -827,6 +837,28 @@ function createSortedChart(data,handler,container) {
           });
 }
 
-function removeSortedChart(handler) {
-  d3.select(`.${handler}`).remove();
+function removeSortedChart(className) {
+  d3.select(`.${className}`).classed('hidden',true);
+}
+
+function showSortedChart(className) {
+  d3.select(`.${className}`).classed('hidden',false);
+}
+
+function matchDefinition(name) {
+  const definitions = {
+    "Network": "",
+    "Team-building": "",
+    "Exchange": "",
+    "Allocentrism": "An “other” orientation. Actively seeks others’ interests, and considers their preferences. The opposite of ego‐centrism.",
+    "Sit. Awareness": "",
+    "Agency": "Shapes situations. Influences circumstances to suit needs, challenges status quo, accepts little as fixed.",
+    "Intentionality": "Acting with a goal in mind. Relentless pursuit of goals, eschewing distractions and secondary rewards.",
+    "Logos": "Uses logical reasons, expertise or data to convince or persuade others.",
+    "Might": "A willingness to use coercive power. More generally, an ability to address difficult issues and tolerate conflict.",
+    "Ethos": "Establishes personal credibility through credentials, commonality and “decorum”, i.e., meeting others\’ expectations.",
+    "Coalition": "",
+    "Pathos": "Conveys messages in a way that has emotional resonance."
+  }
+  return definitions[name]
 }

@@ -23,9 +23,7 @@
     <p>
       Each influence tactic maps to a unique subset of assessment questions, with individual scores that make up an average. The <strong>Absolute</strong> view reflects your average score for each influence tactic (1 = Rarely or Never, 2 = Occasionally, 3 = Often, 4 = Almost Always.) The <strong>Percentile</strong> view reflects how much you favor each tactic compared to other groups of people. The default comparison group for this view is your immediate class. For example, if you scored in the 80th percentile for a tactic, you use that tactic more than 80% of your classmates.
     </p>
-
   </div>
-  <p>&nbsp;</p>
 
   <div class='toggle-and-legend-holder'>
   <form class="selected-student">
@@ -65,30 +63,32 @@
     <div class="self">
       <div class="chart-info">
         <h3 class="chart-title">Self-Assessment</h3>
-        <label class="sort-button-label"><input type="checkbox" class="sort-button" checked> Show sorted values</label>
+        <!-- <label class="sort-button-label"><input type="checkbox" class="sort-button" checked> Show sorted values</label> -->
       </div>
-      <div class="chart-holder">
-        <div class= "chart" id="chart1abs">
+
+        <div class="chart-holder-self">
+          <div class= "chart" id="chart1abs">
+          </div>
         </div>
-        <div class= "chart hidden" id="chart1perc">
-          <!-- <div class="chart-info">
-            <h3 class="chart-title">Self-Assessment</h3>
-          </div> -->
+        <div class="chart-holder-percentile">
+          <div class= "chart hidden" id="chart1perc">
+          </div>
         </div>
-      </div>
+      
     </div>
     <div class="third">
       <div class="chart-info">
         <h3 class="chart-title">360 Assessment</h3>
       </div>
-      <div class= "chart" id="chart2abs">
-      </div>
-      <div class= "chart hidden" id="chart2perc">
-        <!-- <div class="chart-info">
-          <div>
-            <h3 class="chart-title">360 Assessment</h3>
+      <div class="chart-holder">
+        <div class="chart-holder-third">
+          <div class= "chart" id="chart2abs">
           </div>
-        </div> -->
+        </div>
+        <div class="chart-holder-percentile">
+          <div class= "chart hidden" id="chart2perc">
+          </div>
+        </div>
       </div>
     </div>
   </div>

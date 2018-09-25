@@ -8,7 +8,6 @@
 // const url = "https://app.leverageinventory.com/backend/results/";
 // const finalUrl = `${url}?id=${userId}`;
 
-//local
 const finalUrl = 'https://app.leverageinventory.com/backend/results/?id=4260ccb2-60fe-46ba-8122-7ccd233cbf2d';
 
 d3.json(finalUrl, function(error, data) {
@@ -165,7 +164,7 @@ function getStudentData(data,type,group) {
         const self_data = [
             {
                 "data": {
-                    "Network": data.Network1-1,
+                    "Networks": data.Network1-1,
                     "Team-building": data.Team1-1,
                     "Exchange": data.Exchange1-1,
                     "Allocentrism": data.Allocentrism1-1,
@@ -175,7 +174,7 @@ function getStudentData(data,type,group) {
                     "Logos": data.Logos1-1,
                     "Might": data.Might1-1,
                     "Ethos": data.Ethos1-1,
-                    "Coalition": data.Coalition1-1,
+                    "Coalitions": data.Coalition1-1,
                     "Pathos": data.Pathos1-1,
                 }
             }
@@ -183,7 +182,7 @@ function getStudentData(data,type,group) {
         const third_data = [
             {
                 "data": {
-                    "Network": data.Network3-1,
+                    "Networks": data.Network3-1,
                     "Team-building": data.Team3-1,
                     "Exchange": data.Exchange3-1,
                     "Allocentrism": data.Allocentrism3-1,
@@ -193,7 +192,7 @@ function getStudentData(data,type,group) {
                     "Logos": data.Logos3-1,
                     "Might": data.Might3-1,
                     "Ethos": data.Ethos3-1,
-                    "Coalition": data.Coalition3-1,
+                    "Coalitions": data.Coalition3-1,
                     "Pathos": data.Pathos3-1,
                 }
             }
@@ -211,7 +210,7 @@ function getStudentData(data,type,group) {
         const self_data = [
             {
                 "data": {
-                    "Network": data["group_avgs"][group].Network1,
+                    "Networks": data["group_avgs"][group].Network1,
                     "Team-building": data["group_avgs"][group].Team1,
                     "Exchange": data["group_avgs"][group].Exchange1,
                     "Allocentrism": data["group_avgs"][group].Allocentrism1,
@@ -221,7 +220,7 @@ function getStudentData(data,type,group) {
                     "Logos": data["group_avgs"][group].Logos1,
                     "Might": data["group_avgs"][group].Might1,
                     "Ethos": data["group_avgs"][group].Ethos1,
-                    "Coalition": data["group_avgs"][group].Coalition1,
+                    "Coalitions": data["group_avgs"][group].Coalition1,
                     "Pathos": data["group_avgs"][group].Pathos1,
                 }
             }
@@ -229,7 +228,7 @@ function getStudentData(data,type,group) {
         const third_data = [
             {
                 "data": {
-                    "Network": data["group_avgs"][group].Network3,
+                    "Networks": data["group_avgs"][group].Network3,
                     "Team-building": data["group_avgs"][group].Team3,
                     "Exchange": data["group_avgs"][group].Exchange3,
                     "Allocentrism": data["group_avgs"][group].Allocentrism3,
@@ -239,7 +238,7 @@ function getStudentData(data,type,group) {
                     "Logos": data["group_avgs"][group].Logos3,
                     "Might": data["group_avgs"][group].Might3,
                     "Ethos": data["group_avgs"][group].Ethos3,
-                    "Coalition": data["group_avgs"][group].Coalition3,
+                    "Coalitions": data["group_avgs"][group].Coalition3,
                     "Pathos": data["group_avgs"][group].Pathos3,
                 },
                 "Submissions": data["group_avgs"][group].Submissions
@@ -778,7 +777,7 @@ function createSortedChart(data,className,container) {
   var x = d3.scale.linear()
       .range([0, width])
       .domain([0, d3.max(data, function (d) {
-          return d.value;
+          return d.value + 1;
       })]);
 
   var y = d3.scale.ordinal()
@@ -813,9 +812,11 @@ function createSortedChart(data,className,container) {
           .attr("height", y.rangeBand())
           .attr("x", 0)
           .attr("width", function (d) {
-              return x(d.value);
+              return x(d.value+1);
           })
-          .attr("fill","grey")
+          .attr("fill", function (d) {
+            return matchColor(d.name);
+          })
           .on('mouseover', mouseover)
           .on('mousemove', mousemove)
           .on('mouseout', mouseout);
@@ -829,10 +830,10 @@ function createSortedChart(data,className,container) {
           })
           //x position is 3 pixels to the right of the bar
           .attr("x", function (d) {
-              return x(d.value) + 3;
+              return x(d.value+1) + 3;
           })
           .text(function (d) {
-              return d3.format(",.2f")(d.value);
+              return d3.format(",.2f")(d.value+1);
               //return d.value;
           });
 }
@@ -847,18 +848,36 @@ function showSortedChart(className) {
 
 function matchDefinition(name) {
   const definitions = {
-    "Network": "",
-    "Team-building": "",
-    "Exchange": "",
+    "Networks": "Cultivates a broad, disparate network.",
+    "Team-building": "Builds cohesive groups. Strongly connected to organizational culture and socialization.",
+    "Exchange": "Trades favors and concessions. Bargains. Connected more broadly to reciprocity.",
     "Allocentrism": "An “other” orientation. Actively seeks others’ interests, and considers their preferences. The opposite of ego‐centrism.",
-    "Sit. Awareness": "",
+    "Sit. Awareness": "Sensitive to how timing, priorities, risk and other factors vary with context.",
     "Agency": "Shapes situations. Influences circumstances to suit needs, challenges status quo, accepts little as fixed.",
     "Intentionality": "Acting with a goal in mind. Relentless pursuit of goals, eschewing distractions and secondary rewards.",
     "Logos": "Uses logical reasons, expertise or data to convince or persuade others.",
     "Might": "A willingness to use coercive power. More generally, an ability to address difficult issues and tolerate conflict.",
     "Ethos": "Establishes personal credibility through credentials, commonality and “decorum”, i.e., meeting others\’ expectations.",
-    "Coalition": "",
+    "Coalitions": "Identifies and builds support among key people.",
     "Pathos": "Conveys messages in a way that has emotional resonance."
   }
   return definitions[name]
+}
+
+function matchColor(name) {
+  const colors = {
+    "Networks": "#9999ff",
+    "Team-building": "#9999ff",
+    "Exchange": "#9999ff",
+    "Allocentrism": "#9999ff",
+    "Sit. Awareness": "#abf9b4",
+    "Agency": "#abf9b4",
+    "Intentionality": "#abf9b4",
+    "Logos": "#abf9b4",
+    "Might": "#ff7f7f",
+    "Ethos": "#ff7f7f",
+    "Coalitions": "#9999ff",
+    "Pathos": "#9999ff"
+  }
+  return colors[name];
 }

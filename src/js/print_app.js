@@ -1,6 +1,6 @@
 //dev
 const userId = getCookie('resultsid');
-const url = "http://app.levinvstaging.com/backend/results/";
+const url = "https://app.levinvstaging.com/backend/results/";
 const finalUrl = `${url}?id=${userId}`;
 
 //production
@@ -135,7 +135,7 @@ function getStudentData(data,type,group) {
         const self_data = [
             {
                 "data": {
-                    "Network": data.Network1-1,
+                    "Networks": data.Network1-1,
                     "Team-building": data.Team1-1,
                     "Exchange": data.Exchange1-1,
                     "Allocentrism": data.Allocentrism1-1,
@@ -145,7 +145,7 @@ function getStudentData(data,type,group) {
                     "Logos": data.Logos1-1,
                     "Might": data.Might1-1,
                     "Ethos": data.Ethos1-1,
-                    "Coalition": data.Coalition1-1,
+                    "Coalitions": data.Coalition1-1,
                     "Pathos": data.Pathos1-1,
                 }
             }
@@ -153,7 +153,7 @@ function getStudentData(data,type,group) {
         const third_data = [
             {
                 "data": {
-                    "Network": data.Network3-1,
+                    "Networks": data.Network3-1,
                     "Team-building": data.Team3-1,
                     "Exchange": data.Exchange3-1,
                     "Allocentrism": data.Allocentrism3-1,
@@ -163,7 +163,7 @@ function getStudentData(data,type,group) {
                     "Logos": data.Logos3-1,
                     "Might": data.Might3-1,
                     "Ethos": data.Ethos3-1,
-                    "Coalition": data.Coalition3-1,
+                    "Coalitions": data.Coalition3-1,
                     "Pathos": data.Pathos3-1,
                 }
             }

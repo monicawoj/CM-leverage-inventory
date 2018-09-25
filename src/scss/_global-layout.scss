@@ -26,7 +26,8 @@ body {
   }
 }
 
-.header {
+.app-header {
+  height: 60px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -36,6 +37,9 @@ body {
   }
   h2 {
     font-size: 24px;
+  }
+  p {
+    margin-bottom: 20px;
   }
   a {
     font-size: 16px;

@@ -26,10 +26,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
   const groupId = 619707;
   const groupData = groupLevelData[groupId];
 
-  scatterPlotWithErrorBars(groupData.data, ".group-results-chart");
-  d3.select(".group-results-chart .chart-title").html(`${groupData.name}`);
+  scatterPlotWithErrorBars(groupData, ".group-results-chart");
+  //d3.select(".group-results-chart .chart-title").html(`${groupData.name}`);
 
   scatterPlotMultipleGroups(groupLevelData, groupId, groupData, ".group-results-chart-2");
-  d3.select(".group-results-chart-2 .chart-title").html(`${groupData.name} vs. Other Groups`);
+  //d3.select(".group-results-chart-2 .chart-title").html(`${groupData.name} vs. Other Groups`);
+
+  d3.selectAll('.legend-holder')
+    .on('mouseover', function() {
+      this.style.opacity = 1;
+    })
+    .on('mouseout', function() {
+      this.style.opacity = 0.3;
+    });
 
 });

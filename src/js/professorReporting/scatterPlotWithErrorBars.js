@@ -1,8 +1,11 @@
-const scatterPlotWithErrorBars = (data,container) => {
+const scatterPlotWithErrorBars = (groupData,container) => {
 
   // if (error) {
   // 	console.log("error reading file");
   // }
+
+  const data = groupData.data;
+  const groupName = groupData.name;
 
   console.log(data);
 
@@ -17,34 +20,56 @@ const scatterPlotWithErrorBars = (data,container) => {
       fullheight = 600;
 
   // these are the margins around the graph. Axes labels go in margins.
-  var margin = {top: 20, right: 30, bottom: 20, left: 150};
+  var margin = {top: 50, right: 30, bottom: 20, left: 150};
 
   var width = fullwidth - margin.left - margin.right,
     height = fullheight - margin.top - margin.bottom;
 
   var widthScale = d3.scale.linear()
-            .range([ 0, width]);
+    .range([ 0, width]);
 
   var heightScale = d3.scale.ordinal()
-            .rangeRoundBands([ margin.top, height], 0.2);
+    .rangeRoundBands([ margin.top, height], 0.2);
 
   var xAxis = d3.svg.axis()
-          .scale(widthScale)
-          .ticks(4)
-          .tickFormat((d,i) => xAxisLabels[i])
-          .orient("bottom");
+    .scale(widthScale)
+    .ticks(4)
+    .tickFormat((d,i) => xAxisLabels[i])
+    .orient("bottom");
 
   var yAxis = d3.svg.axis()
-          .scale(heightScale)
-          .orient("left")
-          .innerTickSize([0]);
+    .scale(heightScale)
+    .orient("left")
+    .innerTickSize([0]);
+
+  // var div = d3.select(container)
+  //   .append("div")
+  //   .attr("class", "key-holder");
+  //
+  // var keyContainer = keyDiv.append('div')
+  //   .attr('class','key');
+  //
+  // var keyTitle = keySvg.append('text')
+  //   .text('Key')
+  //   .attr("transform", `translate(0,20)`);
+  //
+  // var keyAvg = keySvg.append('g')
+  //   .attr("transform", `translate(0,28)`);
+  //
+  // keyAvg.append('circle')
+  //   .attr("cx", 10)
+  //   .attr("r", 8)
+  //   .attr("cy", 10)
+  //   .style("fill", colors.avg)
+  //
+  //   keyAvg.append('text')
+  //     .text('Group average');
 
   var svg = d3.select(container)
         .append("svg")
         .attr("width", fullwidth)
         .attr("height", fullheight);
 
-  // Define the div for the tooltip
   var tooltip = d3.select(container).append("div")
       .attr("class", "tooltip")
       .style("opacity", 0);
@@ -234,8 +259,14 @@ const scatterPlotWithErrorBars = (data,container) => {
     .attr("x",0 - (height / 2))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .text("Leverage Inventory Factor");
-    // .text("<- Harder Power | Softer Power ->");
+    .text("Leverage Inventory Tactic");
+
+  svg.append("text")
+    .attr("class", "title")
+    .attr("transform", `translate(${margin.left + width / 2},0)`)
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text(groupName);
 
 };
 

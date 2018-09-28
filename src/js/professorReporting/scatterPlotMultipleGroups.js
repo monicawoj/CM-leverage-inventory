@@ -9,22 +9,13 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
 
   const colors = ["#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
 
-  //const colorScale = d3.scaleBand(d3[categorical[0].name]);
-  //.style("fill", function(d, i ) { return colorScale(d); })
-
-  // const colors = {
-  //   tenthPercentile: 'grey',
-  //   ninetiethPercentile: 'grey',
-  //   avg: '#332299'
-  // };
-
   const xAxisLabels = ['Rarely','Occasionally','Often','Always'];
 
   var fullwidth = 600,
       fullheight = 600;
 
   // these are the margins around the graph. Axes labels go in margins.
-  var margin = {top: 20, right: 30, bottom: 20, left: 150};
+  var margin = {top: 50, right: 30, bottom: 20, left: 150};
 
   var width = fullwidth - margin.left - margin.right,
     height = fullheight - margin.top - margin.bottom;
@@ -51,7 +42,6 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
         .attr("width", fullwidth)
         .attr("height", fullheight);
 
-  // Define the div for the tooltip
   var tooltip = d3.select(container).append("div")
       .attr("class", "tooltip")
       .style("opacity", 0);
@@ -110,14 +100,13 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
     		return heightScale(d.factor) + heightScale.rangeBand()/2;
     	})
       .style("fill", `${color}`)
-      //.style("fill", function(d) { return colorScale(d); })
       .on("mouseover", function(d) {
           tooltip.transition()
-              .duration(200)
-              .style("opacity", .9);
-          tooltip.html(`<strong>${groupName}</strong>` + "<br/>"  + `${d.factor}:` + d.avg)
-              .style("left", (d3.event.pageX) + "px")
-              .style("top", (d3.event.pageY - 28) + "px");
+            .duration(200)
+            .style("opacity", .9);
+          tooltip.html(`<strong>${groupName}</strong><br/>${d.factor}: ${d.avg}`)
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
           })
       .on("mouseout", function(d) {
           tooltip.transition()
@@ -196,7 +185,14 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
     .attr("x",0 - (height / 2))
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .text("Leverage Inventory Factor");
+    .text("Leverage Inventory Tactic");
+
+  svg.append("text")
+    .attr("class", "title")
+    .attr("transform", `translate(${margin.left + width / 2},0)`)
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text(`${groupName} vs. Other Groups`);
 
 };
 

@@ -1,11 +1,11 @@
 //dev
-// const userId = getCookie('resultsid');
-// const url = "https://app.levinvstaging.com/backend/results/";
+// const userId = '4260ccb2-60fe-46ba-8122-7ccd233cbf2d';
+// const url = "https://leverage-inventory-dev.wharton-research-programming.org/backend/results/";
 // const finalUrl = `${url}?id=${userId}`;
 
 //production
 // const userId = getCookie('resultsid');
-// const url = "https://app.leverageinventory.com/backend/results/";
+// const url = "https://leverage-inventory.wharton-research-programming.org/backend/results/";
 // const finalUrl = `${url}?id=${userId}`;
 
 const finalUrl = 'https://app.leverageinventory.com/backend/results/?id=4260ccb2-60fe-46ba-8122-7ccd233cbf2d';
@@ -473,7 +473,7 @@ function radialBarChart(centerAxisLabels=false) {
                             if (domain[1] === 3) {
                                 return formatTwoDecimals(d+1);
                             } else {
-                                return d;
+                                return formatTwoDecimals(d);
                             }
                         });
                 })

@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .group-results-chart, .group-results-chart-2 {
@@ -59,39 +60,51 @@ svg .title {
   font-size: 1.5em;
 }
 
+.group-results-chart-2 {
+  .legend-holder {
+    .legend-row {
+      width: 100px;
+    }
+  }
+}
+
 .legend-holder {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
+  align-content: flex-end;
   justify-content: center;
   opacity: 0.3;
-  height: 100px;
+  height: 120px;
+  width: 100%;
+  flex-wrap: wrap;
+  svg.legend-row {
+    width: 100%;
+    height: 40%;
+  }
   .legend-row {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     width: 175px;
-    height: auto;
+    height: 25px;
     font-size: 14px;
     .legend-label {
       padding-left: 15px;
     }
     .legend-block {
+      border-radius: 50%;
+      width: 15px;
+      height: 15px;
       &.avg {
-        border-radius: 50%;
         background-color: #3366cc;
-        width: 15px;
-        height: 15px;
       }
-      &.percentile {
-        border-bottom: 2px dashed black;
-        width: 24px;
-        height: 15px;
-//         stroke: black;
-// stroke-dasharray: 5, 5;
-// stroke-width: 0.5;
-      }
+    }
+    .legend-dash {
+      border-bottom: 2px dashed black;
+      width: 24px;
+      height: 15px;
     }
   }
 }

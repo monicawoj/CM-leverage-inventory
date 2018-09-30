@@ -14,7 +14,6 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
   var fullwidth = 600,
       fullheight = 600;
 
-  // these are the margins around the graph. Axes labels go in margins.
   var margin = {top: 50, right: 30, bottom: 20, left: 150};
 
   var width = fullwidth - margin.left - margin.right,
@@ -46,9 +45,7 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
       .attr("class", "tooltip")
       .style("opacity", 0);
 
-  // data.sort(function(a, b) {
-  // 	return d3.ascending(+a.indexFromSoftToHard, +b.indexFromSoftToHard);
-  // });
+  var legend = d3.select('.group-results-chart-2 .legend-holder');
 
   //sort by avg
   data.sort(function(a, b) {
@@ -58,8 +55,6 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
   widthScale.domain([1, 4]);
 
   heightScale.domain(data.map(function(d) { return d.factor; } ));
-
-  // Make the faint lines from y labels to highest dot
 
   var linesGrid = svg.selectAll("lines.grid")
   	.data(data)
@@ -79,6 +74,63 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
   		return heightScale(d.factor) + heightScale.rangeBand()/2;
   	})
     .attr("stroke", "#eee");
+
+  // Make the dots for the target group
+  createTargetGroupDots(groupData,'#3366cc');
+  createLegendEntry(groupData,'#3366cc');
+
+  // Make the dots for each group
+  const groupKeys = Object.keys(fullData);
+  const otherGroupKeys = groupKeys.filter(item => item !== groupId.toString());
+  otherGroupKeys.forEach((key,i) => {
+    createDots(fullData[key],colors[i])
+    createLegendEntry(fullData[key],colors[i])
+  });
+
+  function createLegendEntry(groupData,color) {
+    const legendRow = legend.append('div')
+      .attr('class','legend-row');
+    legendRow.append('div')
+      .attr('class','legend-block')
+      .style("background-color", color);
+    legendRow.append('p')
+      .attr('class','legend-label')
+      .text(groupData.name);
+  }
+
+  function createTargetGroupDots(groupData,color) {
+    let data = groupData.data;
+    let groupName = groupData.name;
+
+    var dotsAvg = svg.selectAll("circle.avg")
+    		.data(data)
+    		.enter()
+    		.append("circle");
+
+    dotsAvg
+    	.attr("class", "average")
+    	.attr("cx", function(d) {
+    		return margin.left + widthScale(+d.avg);
+    	})
+    	.attr("r", heightScale.rangeBand()/3)
+    	.attr("cy", function(d) {
+    		return heightScale(d.factor) + heightScale.rangeBand()/2;
+    	})
+      .style("fill", color)
+      .on("mouseover", function(d) {
+          tooltip.transition()
+              .duration(200)
+              .style("opacity", .9);
+          tooltip.html(`<strong>${groupName}</strong>` + "<br/>"  + `${d.factor}:` + d.avg)
+              .style("left", (d3.event.pageX) + "px")
+              .style("top", (d3.event.pageY - 28) + "px");
+          })
+      .on("mouseout", function(d) {
+          tooltip.transition()
+              .duration(500)
+              .style("opacity", 0);
+      });
+  }
 
   function createDots(groupData,color) {
 
@@ -114,50 +166,6 @@ const scatterPlotMultipleGroups = (fullData, groupId, groupData,container) => {
               .style("opacity", 0);
       });
   }
-
-    // Make the dots for the target group
-    createTargetGroupDots(groupData);
-
-    // Make the dots for each group
-    const groupKeys = Object.keys(fullData);
-    const otherGroupKeys = groupKeys.filter(item => item !== groupId.toString());
-    otherGroupKeys.forEach((key,i) => {
-      createDots(fullData[key],colors[i])
-    });
-
-    function createTargetGroupDots(groupData) {
-      let data = groupData.data;
-      let groupName = groupData.name;
-
-      var dotsAvg = svg.selectAll("circle.avg")
-      		.data(data)
-      		.enter()
-      		.append("circle");
-
-      dotsAvg
-      	.attr("class", "average")
-      	.attr("cx", function(d) {
-      		return margin.left + widthScale(+d.avg);
-      	})
-      	.attr("r", heightScale.rangeBand()/3)
-      	.attr("cy", function(d) {
-      		return heightScale(d.factor) + heightScale.rangeBand()/2;
-      	})
-        .style("fill", '#3366cc')
-        .on("mouseover", function(d) {
-            tooltip.transition()
-                .duration(200)
-                .style("opacity", .9);
-            tooltip.html(`<strong>${groupName}</strong>` + "<br/>"  + `${d.factor}:` + d.avg)
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
-            })
-        .on("mouseout", function(d) {
-            tooltip.transition()
-                .duration(500)
-                .style("opacity", 0);
-        });
-    }
 
   // add the axes
   svg.append("g")

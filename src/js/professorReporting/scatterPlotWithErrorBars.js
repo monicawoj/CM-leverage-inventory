@@ -42,29 +42,6 @@ const scatterPlotWithErrorBars = (groupData,container) => {
     .orient("left")
     .innerTickSize([0]);
 
-  // var div = d3.select(container)
-  //   .append("div")
-  //   .attr("class", "key-holder");
-  //
-  // var keyContainer = keyDiv.append('div')
-  //   .attr('class','key');
-  //
-  // var keyTitle = keySvg.append('text')
-  //   .text('Key')
-  //   .attr("transform", `translate(0,20)`);
-  //
-  // var keyAvg = keySvg.append('g')
-  //   .attr("transform", `translate(0,28)`);
-  //
-  // keyAvg.append('circle')
-  //   .attr("cx", 10)
-  //   .attr("r", 8)
-  //   .attr("cy", 10)
-  //   .style("fill", colors.avg)
-  //
-  //   keyAvg.append('text')
-  //     .text('Group average');
-
   var svg = d3.select(container)
         .append("svg")
         .attr("width", fullwidth)
@@ -74,10 +51,6 @@ const scatterPlotWithErrorBars = (groupData,container) => {
       .attr("class", "tooltip")
       .style("opacity", 0);
 
-  // data.sort(function(a, b) {
-  // 	return d3.ascending(+a.indexFromSoftToHard, +b.indexFromSoftToHard);
-  // });
-
   //sort by avg
   data.sort(function(a, b) {
   	return d3.descending(+a.avg, +b.avg);
@@ -86,8 +59,6 @@ const scatterPlotWithErrorBars = (groupData,container) => {
   widthScale.domain([1, 4]);
 
   heightScale.domain(data.map(function(d) { return d.factor; } ));
-
-  // Make the faint lines from y labels to highest dot
 
   var linesGrid = svg.selectAll("lines.grid")
   	.data(data)
@@ -134,7 +105,6 @@ const scatterPlotWithErrorBars = (groupData,container) => {
 
 
   // Make the dots for TenthPercentile
-
   var dotsTenthPercentile = svg.selectAll("circle.tenthPercentile")
   		.data(data)
   		.enter()
@@ -164,15 +134,7 @@ const scatterPlotWithErrorBars = (groupData,container) => {
             .style("opacity", 0);
     });
 
-    // svg.selectAll("circle.tenthPercentile")
-    //     .append("text")
-    //     .attr("class","circle-text")
-    //     .attr("fill","black")
-    //     .text(d => d.tenthPercentile);
-    //
-
   // Make the dots for NinetiethPercentile
-
   var dotsNinetiethPercentile = svg.selectAll("circle.ninetiethPercentile")
   		.data(data)
   		.enter()
@@ -203,7 +165,6 @@ const scatterPlotWithErrorBars = (groupData,container) => {
     });
 
     // Make the dots for the average
-
     var dotsAvg = svg.selectAll("circle.avg")
     		.data(data)
     		.enter()

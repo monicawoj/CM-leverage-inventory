@@ -16,6 +16,41 @@ d3.json(finalUrl, function(error, data) {
         return console.warn(error);
     }
 
+    const chartHolderSelf = d3.select('.chart-holder-self');
+    const chartHolderThird = d3.select('.chart-holder-third');
+    const chartHolderPercentileSelf = d3.select('.self .chart-holder-percentile');
+    const chartHolderPercentileThird = d3.select('.third .chart-holder-percentile');
+
+    const self_title = chartHolderSelf
+      .append('h3')
+      .attr('class','chart-title')
+      .text('Self-Assessment');
+
+    const third_title = chartHolderThird
+      .append('h3')
+      .attr('class','chart-title')
+      .text('360 Assessment');
+
+    chartHolderSelf
+      .append('div')
+      .attr('class','chart')
+      .attr('id','chart1abs');
+
+    chartHolderThird
+      .append('div')
+      .attr('class','chart')
+      .attr('id','chart2abs');
+
+    chartHolderPercentileSelf
+      .append('div')
+      .attr('class','chart hidden')
+      .attr('id','chart1perc');
+
+    chartHolderPercentileThird
+      .append('div')
+      .attr('class','chart hidden')
+      .attr('id','chart2perc');
+
     //create options to compare against different subgroups based on the groups that the user belongs to
     const groupData = data.groups;
     const groupOptionHolders = d3.select('.options')
@@ -39,8 +74,8 @@ d3.json(finalUrl, function(error, data) {
         .property('checked',true);
 
     //create initial charts
-    const hasEnough360Ratings = data.hasEnough360Ratings;
-    //const hasEnough360Ratings = 0;
+    //const hasEnough360Ratings = data.hasEnough360Ratings;
+    const hasEnough360Ratings = 1;
     const chartData = getStudentData(data,'Absolute',group);
     const self_data = chartData[0];
     const third_data = chartData[1];
@@ -205,6 +240,7 @@ function getStudentData(data,type,group) {
         const sorted_third_data = sorted_third_data_temp.map(function(item) {
           return {"name":item[0], "value": item[1]}
         });
+        console.log(third_data);
         return [self_data, third_data, sorted_self_data, sorted_third_data];
     } else {
         const self_data = [
@@ -252,6 +288,7 @@ function getStudentData(data,type,group) {
         const sorted_third_data = sorted_third_data_temp.map(function(item) {
           return {"name":item[0], "value": item[1]}
         });
+        console.log(third_data);
         return [self_data, third_data, sorted_self_data, sorted_third_data];
     }
 }
@@ -736,12 +773,12 @@ function createSortedChart(data,className,container) {
 
   var margin = {
       top: 15,
-      right: 25,
+      right: 50,
       bottom: 15,
-      left: 120
+      left: 50
   };
 
-  var width = 400 - margin.left - margin.right,
+  var width = 480 - margin.left - margin.right,
       height = 480 - margin.top - margin.bottom;
 
   var svg = d3.select(`.${container}`).insert("svg",".chart")
@@ -749,7 +786,7 @@ function createSortedChart(data,className,container) {
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", "translate(" + margin.right + "," + margin.top + ")");
 
   // tooltips
   var tooltip = d3.select(`.${container}`).append('div')
@@ -765,7 +802,7 @@ function createSortedChart(data,className,container) {
       var d = d3.select(this).data()[0]
       tooltip
         //.html(d.name + '<hr/>' + d3.format(",.2f")(d.value) + '<hr/>' + d.definition)
-        .html(d.name + '<hr/>' + d.definition)
+        .html(d.name + '<hr/>' + matchDefinition(d.name))
         .style('left', (d3.event.pageX - 34) + 'px')
         .style('top', (d3.event.pageY - 12) + 'px');
   }
